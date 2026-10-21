@@ -109,6 +109,20 @@ node index.js
 - `src/scenes.js` holds the scene trigger and the scene actions.
 - `src/sounds.js` serves the shared sound folder.
 
+## Legal notice
+
+This is an **independent, unofficial project**. It is **not affiliated with, authorised,
+endorsed or sponsored by Sennheiser electronic SE & Co. KG** or any of its subsidiaries,
+and it is not an official Sennheiser product or a Sennheiser service.
+
+**Sennheiser** and **AMBEO** are trademarks or registered trademarks of
+[Sennheiser electronic SE & Co. KG](https://www.sennheiser.com/) and are used here only to
+describe the hardware this integration works with. All other trademarks, product names and
+company names mentioned in this repository are the property of their respective owners.
+
+All product names, logos and brands are used for identification purposes only and remain
+the property of their respective owners.
+
 ## Licence
 
 Apache-2.0. The soundbar API paths follow the pyambeo library, which is MIT licensed.
