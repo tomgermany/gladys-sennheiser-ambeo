@@ -7,7 +7,10 @@ La Plus est le modèle de référence ; la Mini et la Max sont prises en charge 
 
 1. Trouvez l'adresse IP de la barre (app Smart Control ou routeur).
 2. Saisissez-la dans l'écran **Configuration** de l'intégration.
-3. Lancez une recherche d'appareils : un appareil avec tous les réglages de votre modèle est créé.
+3. Appuyez sur **Tester la connexion** : l'intégration interroge la barre et dit ce
+   qu'elle a répondu (modèle, firmware, nombre d'entrées, volume). En cas d'erreur,
+   l'adresse est fausse ou la barre n'est pas joignable sur son port 80.
+4. Lancez une recherche d'appareils : un appareil avec tous les réglages de votre modèle est créé.
 
 ## Fonctions de l'appareil
 
@@ -19,6 +22,9 @@ le volume central ; la Max expose le niveau AMBEO et les niveaux centre/latéral
 La marche/arrêt dépend du modèle : la Max peut être réveillée et mise en veille, le bouton
 du widget est masqué sur les autres modèles.
 
+Un modèle qui ne répond pas à tout un groupe de réglages (certaines versions de firmware)
+apparaît quand même : ce qu'il ne répond pas est journalisé et ignoré.
+
 ## Widget « Télécommande barre de son »
 
 Marche/arrêt, volume −/+ (pas configurable), sourdine et un bouton par entrée sélectionnable.
@@ -28,10 +34,9 @@ Marche/arrêt, volume −/+ (pas configurable), sourdine et un bouton par entré
 **Action « Jouer un son sur la barre de son »** joue un MP3 ou WAV :
 
 - **Fichier du dossier « sounds »** : l'intégration sert le fichier elle-même et la barre
-  le récupère. Ouvrez le port « sounds » de l'intégration depuis l'écran Applications,
-  déposez-y vos MP3 ou WAV, puis choisissez-le dans l'action (laissez le nom vide pour
-  utiliser le son par défaut de la configuration). Un son d'exemple de trois secondes
-  (`tone.wav`) est livré avec l'intégration.
+  le récupère. Le dossier vit dans le volume de données de l'intégration, et le son par
+  défaut est nommé dans la configuration (laissez le champ de la scène vide pour l'utiliser).
+  Un son d'exemple de trois secondes (`tone.wav`) est livré et installé au premier démarrage.
 - **URL http(s)** : un lien direct vers le fichier, joignable par la barre.
 
 Le champ **volume** optionnel règle le volume avant la lecture.
