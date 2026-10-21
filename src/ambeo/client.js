@@ -126,6 +126,9 @@ const MAX_DECODER_CODECS = {
 
 export class AmbeoError extends Error {}
 
+/** First characters of a raw answer, for the log — never a full body. */
+const snippet = (text) => String(text).replace(/\s+/g, ' ').trim().slice(0, 120);
+
 export class AmbeoClient {
   /**
    * @param {string} host IP or hostname of the soundbar
@@ -136,6 +139,8 @@ export class AmbeoClient {
     this.endpoint = `http://${host}:${port}/api`;
     this.fetch = fetchImpl;
     this.timeoutMs = timeoutMs;
+    // Optional hook: the caller logs what was tolerated instead of failing.
+    this.warn = null;
     this.info = null;
     this.isMax = false;
     this.settings = [];
@@ -156,11 +161,25 @@ export class AmbeoClient {
     } catch (err) {
       throw new AmbeoError(`Soundbar unreachable (${this.host}): ${err.message}`);
     }
-    if (!res.ok) throw new AmbeoError(`HTTP ${res.status} for ${path}`);
+    // The body is read as text first: some firmware answers an empty body or
+    // HTML on an unknown path, and `res.json()` loses the body when it throws.
+    // Keeping the beginning of the raw answer lets the log say WHAT came back.
+    let body;
     try {
-      return await res.json();
+      body = await res.text();
+    } catch (err) {
+      throw new AmbeoError(`${fn} ${path}: unreadable answer (${err.message})`);
+    }
+    if (!res.ok || body.trim() === '') {
+      throw new AmbeoError(
+        `HTTP ${res.status} for ${path} (empty answer)` +
+          (body.trim() ? ` — ${snippet(body)}` : ''),
+      );
+    }
+    try {
+      return JSON.parse(body);
     } catch {
-      throw new AmbeoError(`Invalid JSON for ${path}`);
+      throw new AmbeoError(`Invalid JSON for ${path} — answer starts with: ${snippet(body)}`);
     }
   }
 
@@ -196,7 +215,9 @@ export class AmbeoClient {
   async connect() {
     const model = await this.getValue('settings:/system/productName', 'string_');
     if (![MODEL_MAX, MODEL_PLUS, MODEL_MINI].includes(model)) {
-      throw new AmbeoError(`Unsupported model: ${model}`);
+      throw new AmbeoError(
+        `Unsupported model: ${model || '(empty answer)'} — the address may point to another device`,
+      );
     }
     this.isMax = model === MODEL_MAX;
     this.settings = [...BASE, ...(this.isMax ? MAX_SETTINGS : POPCORN_SETTINGS)];
@@ -207,9 +228,20 @@ export class AmbeoClient {
       opt('ui:settings/firmwareUpdate/currentVersion'),
     ]);
     this.info = { model, name, serial, version };
-    this.sources = await this.fetchSources().catch(() => []);
-    this.presets = await this.fetchPresets().catch(() => []);
-    await this.fetchRanges();
+
+    // Everything below is optional: a model that does not answer a whole group
+    // (sources, presets, ranges) must stay usable for what it does answer,
+    // otherwise the device would never appear. What is skipped is logged with
+    // its path, so a partial device is diagnosable.
+    this.sources = await this.fetchSources().catch((err) => {
+      this.warn?.('sources', err);
+      return [];
+    });
+    this.presets = await this.fetchPresets().catch((err) => {
+      this.warn?.('presets', err);
+      return [];
+    });
+    await this.fetchRanges().catch((err) => this.warn?.('ranges', err));
     return this.info;
   }
 
@@ -230,10 +262,17 @@ export class AmbeoClient {
       }
       return out;
     }
-    const rows = await this.getRows('ui:/inputs', 0, 10);
-    const custom = await this.getValue('settings:/popcorn/ui/input/inputList', 'popcornInputList').catch(
-      () => [],
-    );
+    // The input list is an OPTIONAL refinement: on a firmware that does not
+    // answer it, the rows themselves still give the usable inputs.
+    const [rows, custom] = await Promise.all([
+      this.getRows('ui:/inputs', 0, 10),
+      this.getValue('settings:/popcorn/ui/input/inputList', 'popcornInputList').catch(
+        (err) => {
+          this.warn?.('custom input names', err);
+          return [];
+        },
+      ),
+    ]);
     const names = Object.fromEntries(
       (custom || []).filter((i) => i?.id && i.customName).map((i) => [i.id, i.customName]),
     );
@@ -257,7 +296,12 @@ export class AmbeoClient {
   async fetchRanges() {
     const targets = this.settings.filter((st) => DEFAULT_RANGES[st.key]);
     const results = await Promise.all(
-      targets.map((st) => this.getData(st.path).catch(() => null)),
+      targets.map((st) =>
+        this.getData(st.path).catch((err) => {
+          this.warn?.('range', err);
+          return null;
+        }),
+      ),
     );
     targets.forEach((st, i) => {
       const edit = results[i]?.edit;
@@ -396,5 +440,24 @@ export class AmbeoClient {
     const next = Math.max(min, Math.min(max, (current ?? 0) + delta));
     await this.set(KEY.VOLUME, next);
     return next;
+  }
+
+  /**
+   * Ask the soundbar to play a media file at `url`. Ported from pyambeo: the
+   * app hands the renderer a media item over UPnP (the bar switches to the
+   * matching source by itself). NOT VERIFIED against a device.
+   */
+  async playUrl(url, { volume } = {}) {
+    const kind = /\.wav(\?|$)/i.test(url) ? 'audio/wav' : 'audio/mpeg';
+    await this.activate('upnp:avTransportUri', {
+      type: 'string_',
+      string_: url,
+      metadata: {
+        title: url.split('/').pop() ?? 'Announcement',
+        mimeType: kind,
+        protocolInfo: `http-get:*:${kind}:*`,
+      },
+    });
+    if (Number.isFinite(volume)) await this.set(KEY.VOLUME, volume);
   }
 }
