@@ -11,6 +11,30 @@
   "gladys_version": ">=5.1.0",
   "categories": ["music"],
   "transports": ["local"],
+  "containers": [
+    {
+      "name": "sounds",
+      "docker_image": "ghcr.io/tomgermany/gladys-sennheiser-ambeo:1.0.0",
+      "start": "manual",
+      "command": ["node", "-e", "process.exit(0)"],
+      "read_only": false,
+      "ports": [
+        {
+          "container_port": 8080,
+          "protocol": "tcp",
+          "name": "sounds",
+          "browsable": true,
+          "label": {
+            "en": "Sound files (drop your MP3 here)",
+            "fr": "Fichiers sons (déposez vos MP3 ici)"
+          }
+        }
+      ],
+      "volumes": [
+        { "container_path": "/sounds", "label": { "en": "Sound files", "fr": "Fichiers sons" } }
+      ]
+    }
+  ],
   "config_schema": [
     {
       "key": "host",
@@ -48,6 +72,56 @@
       "default": 5,
       "min": 1,
       "max": 20
+    },
+    {
+      "key": "sounds_intro",
+      "type": "section",
+      "label": { "en": "Sounds of the scenes", "fr": "Sons des scènes" },
+      "description": {
+        "en": "The list below is the content of the integration's \"sounds\" folder. The folder is published on the \"sounds\" port of the integration: open it, drop your MP3 or WAV files there, then reload this screen.",
+        "fr": "La liste ci-dessous est le contenu du dossier « sounds » de l'intégration. Ce dossier est publié sur le port « sounds » : ouvrez-le, déposez vos MP3 ou WAV, puis rechargez cet écran."
+      }
+    },
+    {
+      "key": "default_sound",
+      "type": "select",
+      "label": { "en": "Default sound", "fr": "Son par défaut" },
+      "description": {
+        "en": "File played by the \"Play a sound\" scene action when the scene does not name one. Samples: tone.wav, and tone.mp3 once you add it.",
+        "fr": "Fichier joué par l'action « Jouer un son » quand la scène n'en nomme pas. Exemples : tone.wav, et tone.mp3 une fois ajouté."
+      },
+      "required": false,
+      "default": "tone.wav",
+      "options": [
+        { "value": "tone.wav", "label": { "en": "tone.wav (sample)" }, "sort_order": 1 },
+        { "value": "tone.mp3", "label": { "en": "tone.mp3 (after you add it)" }, "sort_order": 2 }
+      ]
+    },
+    {
+      "key": "volume_max",
+      "type": "number",
+      "label": { "en": "Too loud above", "fr": "Trop fort au-delà de" },
+      "description": {
+        "en": "Fires the 'volume crossed a limit' trigger when the volume goes above this value. 0 disables it.",
+        "fr": "Déclenche « le volume franchit une limite » quand le volume dépasse cette valeur. 0 désactive."
+      },
+      "required": false,
+      "default": 70,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "volume_min",
+      "type": "number",
+      "label": { "en": "Too quiet below", "fr": "Trop faible en dessous de" },
+      "description": {
+        "en": "Fires the 'volume crossed a limit' trigger when the volume drops below this value. 0 disables it.",
+        "fr": "Déclenche « le volume franchit une limite » quand le volume passe sous cette valeur. 0 désactive."
+      },
+      "required": false,
+      "default": 10,
+      "min": 0,
+      "max": 100
     }
   ],
   "widgets": [
@@ -60,6 +134,135 @@
       },
       "icon": "speaker",
       "action_timeout_seconds": 15
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "volume_threshold_crossed",
+      "label": { "en": "Volume crossed a limit", "fr": "Le volume franchit une limite" },
+      "description": {
+        "en": "The soundbar volume went above the 'too loud' limit or below the 'too quiet' limit set in the configuration.",
+        "fr": "Le volume de la barre est passé au-dessus de la limite « trop fort » ou en dessous de la limite « trop faible »."
+      },
+      "fields": [
+        {
+          "key": "direction",
+          "type": "select",
+          "label": { "en": "Direction", "fr": "Sens" },
+          "options": [
+            { "value": "over", "label": { "en": "Too loud", "fr": "Trop fort" } },
+            { "value": "under", "label": { "en": "Too quiet", "fr": "Trop faible" } }
+          ]
+        }
+      ],
+      "variables": [
+        { "key": "direction", "type": "string", "label": { "en": "Direction", "fr": "Sens" } },
+        { "key": "limit", "type": "number", "label": { "en": "Limit", "fr": "Limite" } },
+        { "key": "volume", "type": "number", "label": { "en": "Volume", "fr": "Volume" } }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "play_sound",
+      "label": { "en": "Play a sound on the soundbar", "fr": "Jouer un son sur la barre de son" },
+      "description": {
+        "en": "Makes the soundbar play an MP3 or WAV, either from a http(s) URL or from a file of its 'sounds' folder.",
+        "fr": "Fait jouer un MP3 ou WAV à la barre : depuis une URL http(s) ou depuis un fichier du dossier « sounds »."
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "source",
+          "type": "select",
+          "label": { "en": "Source of the file", "fr": "Source du fichier" },
+          "required": true,
+          "default": "data",
+          "options": [
+            {
+              "value": "data",
+              "label": { "en": "File of the 'sounds' folder", "fr": "Fichier du dossier « sounds »" }
+            },
+            { "value": "url", "label": { "en": "http(s) URL", "fr": "URL http(s)" } }
+          ]
+        },
+        {
+          "key": "file",
+          "type": "string",
+          "label": { "en": "File name", "fr": "Nom du fichier" },
+          "description": {
+            "en": "Name of the file in the integration's 'sounds' folder, e.g. tone.wav or alarm.mp3. Empty uses the default sound of the configuration.",
+            "fr": "Nom du fichier dans le dossier « sounds », ex. tone.wav ou alarme.mp3. Vide = son par défaut de la configuration."
+          },
+          "placeholder": { "en": "tone.wav", "fr": "tone.wav" }
+        },
+        {
+          "key": "url",
+          "type": "string",
+          "label": { "en": "File URL", "fr": "URL du fichier" },
+          "description": {
+            "en": "Direct http(s) link to the file, reachable by the soundbar.",
+            "fr": "Lien http(s) direct vers le fichier, joignable par la barre."
+          },
+          "placeholder": {
+            "en": "https://example.com/alarm.mp3",
+            "fr": "https://exemple.fr/alarme.mp3"
+          }
+        },
+        {
+          "key": "volume",
+          "type": "number",
+          "label": { "en": "Volume (optional)", "fr": "Volume (optionnel)" },
+          "description": {
+            "en": "Volume to set before playing, 0 to 100. Leave empty to keep the current volume.",
+            "fr": "Volume à régler avant la lecture, de 0 à 100. Laisser vide pour garder le volume actuel."
+          },
+          "min": 0,
+          "max": 100
+        }
+      ],
+      "outputs": [
+        { "key": "played", "type": "boolean", "label": { "en": "Sound sent", "fr": "Son envoyé" } },
+        { "key": "file", "type": "string", "label": { "en": "File played", "fr": "Fichier joué" } }
+      ]
+    },
+    {
+      "key": "read_state",
+      "label": { "en": "Read the soundbar state", "fr": "Lire l'état de la barre de son" },
+      "description": {
+        "en": "Reads the soundbar now and hands volume, mute, input, sound profile and codec to the following actions.",
+        "fr": "Lit la barre maintenant et transmet volume, sourdine, entrée, profil sonore et codec aux actions suivantes."
+      },
+      "timeout_seconds": 30,
+      "outputs": [
+        { "key": "volume", "type": "number", "label": { "en": "Volume", "fr": "Volume" } },
+        { "key": "muted", "type": "boolean", "label": { "en": "Muted", "fr": "Sourdine" } },
+        { "key": "input", "type": "string", "label": { "en": "Input", "fr": "Entrée" } },
+        { "key": "preset", "type": "string", "label": { "en": "Sound profile", "fr": "Profil sonore" } },
+        { "key": "codec", "type": "string", "label": { "en": "Codec", "fr": "Codec" } }
+      ]
+    },
+    {
+      "key": "set_volume",
+      "label": { "en": "Set the soundbar volume", "fr": "Régler le volume de la barre" },
+      "description": {
+        "en": "Sets the soundbar volume to an absolute value.",
+        "fr": "Règle le volume de la barre à une valeur absolue."
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "volume",
+          "type": "number",
+          "label": { "en": "Volume", "fr": "Volume" },
+          "required": true,
+          "min": 0,
+          "max": 100
+        }
+      ],
+      "outputs": [
+        { "key": "volume", "type": "number", "label": { "en": "Volume", "fr": "Volume" } }
+      ]
     }
   ]
 }
