@@ -1,1 +1,0 @@
-Sennheiser AMBEO Soundbar
