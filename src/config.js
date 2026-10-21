@@ -1,16 +1,5 @@
-// -----------------------------------------------------------------------------
-// Integration configuration.
-//
-// Filled in by the user in Gladys, from the `config_schema` of
-// `gladys-assistant-integration.json`. The SDK fetches it (`gladys.getConfig()`)
-// and notifies every change through `gladys.onConfigUpdated()`.
-//
-// This module only provides defaults and normalizes the object, so the rest of
-// the code never deals with `undefined`.
-// -----------------------------------------------------------------------------
-
-// Defaults: they MUST stay consistent with the `default` values declared in the
-// `config_schema` of the manifest (checked by test/manifest.test.js).
+// Defaults MUST stay consistent with the `default` values of the manifest
+// `config_schema` (checked by test/manifest.test.js and test/client.test.js).
 export const DEFAULT_CONFIG = {
   host: '',
   poll_frequency: 60, // seconds between two state reads

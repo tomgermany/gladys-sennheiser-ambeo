@@ -6,16 +6,18 @@ import { buildRemoteContent } from '../src/widgets.js';
 import { DEFAULT_CONFIG } from '../src/config.js';
 
 // Fake soundbar (Plus/Mini flavour): path -> getData answer.
+// Answers are served as TEXT, like the real client reads them.
 function fakeFetch(store, calls) {
   return async (url) => {
     const u = new URL(url);
     const fn = u.pathname.split('/').pop();
     const path = u.searchParams.get('path');
     calls.push({ fn, path, value: u.searchParams.get('value') });
-    if (fn === 'getRows') return { ok: true, json: async () => ({ rows: store.rows[path] ?? [] }) };
-    if (fn === 'setData') return { ok: true, json: async () => ({}) };
-    if (!(path in store.data)) return { ok: false, status: 404, json: async () => ({}) };
-    return { ok: true, json: async () => ({ value: store.data[path] }) };
+    const body = (data) => ({ ok: true, text: async () => JSON.stringify(data) });
+    if (fn === 'getRows') return body({ rows: store.rows[path] ?? [] });
+    if (fn === 'setData') return body({});
+    if (!(path in store.data)) return { ok: false, status: 404, text: async () => '' };
+    return body({ value: store.data[path] });
   };
 }
 
@@ -35,7 +37,9 @@ const store = {
       { id: 'hdmi1', title: 'HDMI 1', path: 'ui:/inputs/hdmi1' },
       { id: 'spdif', title: 'Optical', path: 'ui:/inputs/optical' },
     ],
-    'settings:/popcorn/audio/audioPresetValues': [{ title: 'Movie', value: { popcornAudioPreset: 'movie' } }],
+    'settings:/popcorn/audio/audioPresetValues': [
+      { title: 'Movie', value: { popcornAudioPreset: 'movie' } },
+    ],
   },
 };
 
@@ -74,8 +78,37 @@ test('widget exposes power (Max only), volume and one button per input', async (
 });
 
 test('manifest defaults match config defaults', () => {
-  const m = JSON.parse(readFileSync(new URL('../gladys-assistant-integration.json', import.meta.url)));
+  const m = JSON.parse(
+    readFileSync(new URL('../gladys-assistant-integration.json', import.meta.url)),
+  );
   for (const f of m.config_schema.filter((x) => 'default' in x)) {
     assert.equal(f.default, DEFAULT_CONFIG[f.key], f.key);
   }
+});
+
+test('a soundbar that answers the model but nothing else still connects', async () => {
+  // A firmware that only knows the model: every optional group is missing.
+  const partial = {
+    data: { 'settings:/system/productName': { string_: 'AMBEO Soundbar Mini' } },
+    rows: {},
+  };
+  const warns = [];
+  const c = new AmbeoClient('1.2.3.4', { fetch: fakeFetch(partial, []) });
+  c.warn = (what) => warns.push(what);
+  const info = await c.connect();
+  assert.equal(info.model, 'AMBEO Soundbar Mini');
+  assert.equal(c.sources.filter((s) => s.selectable).length, 0);
+  assert.deepEqual(c.presets, []);
+  assert.ok(warns.includes('sources'), 'the skipped group is reported');
+});
+
+test('an HTML answer is reported with its path, not as a bare JSON error', async () => {
+  const htmlFetch = async () => ({ ok: true, text: async () => '<html><body>Hello</body></html>' });
+  const c = new AmbeoClient('1.2.3.4', { fetch: htmlFetch });
+  await assert.rejects(
+    () => c.connect(),
+    (err) =>
+      /Invalid JSON for settings:\/system\/productName/.test(err.message) &&
+      /<html>/.test(err.message),
+  );
 });
