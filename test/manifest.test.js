@@ -111,9 +111,20 @@ test('every select field offers at least one option', () => {
   }
 });
 
-test('the manifest version is the package version, and the image is tagged with it', () => {
+test('the manifest and the package agree on the version', () => {
   assert.equal(manifest.version, pkg.version, 'manifest version must match package.json');
-  assert.ok(manifest.docker_image.endsWith(`:${manifest.version}`));
+});
+
+// The image tag is deliberately free: a test branch publishes the same manifest
+// with a branch tag (ghcr.io/...:feat-something), and the Release workflow puts
+// the version tag back. Only the shape is checked here, the store validator is
+// the place that ties the tag to a published image.
+test('the image is tagged, on a registry, with a non-empty tag', () => {
+  assert.match(
+    manifest.docker_image,
+    /^[a-z0-9.-]+\/\S+:[A-Za-z0-9._-]+$/,
+    `docker_image must carry a tag, got "${manifest.docker_image}"`,
+  );
 });
 
 test('the catalog description holds 10 to 100 characters per language', () => {
