@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
 // Scene triggers and scene actions (SDK v0.14+/0.15, Gladys 5.1+).
-//
+//  
 // Triggers are EVENTS the integration fires; actions are OPERATIONS a scene
 // author places in a scene. Keys are forever: scenes store them.
 //
