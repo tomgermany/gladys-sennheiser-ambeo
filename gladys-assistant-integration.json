@@ -7,34 +7,10 @@
     "fr": "Pilotez les barres de son Sennheiser AMBEO Max, Plus et Mini sur votre réseau local."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/tomgermany/gladys-sennheiser-ambeo:1.0.0",
+  "docker_image": "ghcr.io/tomgermany/gladys-sennheiser-ambeo:feat-ambeo-soundbar-integration",
   "gladys_version": ">=5.1.0",
   "categories": ["music"],
   "transports": ["local"],
-  "containers": [
-    {
-      "name": "sounds",
-      "docker_image": "ghcr.io/tomgermany/gladys-sennheiser-ambeo:1.0.0",
-      "start": "manual",
-      "command": ["node", "-e", "process.exit(0)"],
-      "read_only": false,
-      "ports": [
-        {
-          "container_port": 8080,
-          "protocol": "tcp",
-          "name": "sounds",
-          "browsable": true,
-          "label": {
-            "en": "Sound files (drop your MP3 here)",
-            "fr": "Fichiers sons (déposez vos MP3 ici)"
-          }
-        }
-      ],
-      "volumes": [
-        { "container_path": "/sounds", "label": { "en": "Sound files", "fr": "Fichiers sons" } }
-      ]
-    }
-  ],
   "config_schema": [
     {
       "key": "host",
@@ -78,24 +54,21 @@
       "type": "section",
       "label": { "en": "Sounds of the scenes", "fr": "Sons des scènes" },
       "description": {
-        "en": "The list below is the content of the integration's \"sounds\" folder. The folder is published on the \"sounds\" port of the integration: open it, drop your MP3 or WAV files there, then reload this screen.",
-        "fr": "La liste ci-dessous est le contenu du dossier « sounds » de l'intégration. Ce dossier est publié sur le port « sounds » : ouvrez-le, déposez vos MP3 ou WAV, puis rechargez cet écran."
+        "en": "The sound files are served by the integration itself on its own port: open that port, drop your MP3 or WAV files there, then reload this screen. A three second sample tone is installed on first start.",
+        "fr": "Les fichiers sons sont servis par l'intégration elle-même sur son propre port : ouvrez ce port, déposez vos MP3 ou WAV, puis rechargez cet écran. Un son d'exemple de trois secondes est installé au premier démarrage."
       }
     },
     {
       "key": "default_sound",
-      "type": "select",
-      "label": { "en": "Default sound", "fr": "Son par défaut" },
+      "type": "string",
+      "label": { "en": "Default sound file", "fr": "Fichier son par défaut" },
       "description": {
-        "en": "File played by the \"Play a sound\" scene action when the scene does not name one. Samples: tone.wav, and tone.mp3 once you add it.",
-        "fr": "Fichier joué par l'action « Jouer un son » quand la scène n'en nomme pas. Exemples : tone.wav, et tone.mp3 une fois ajouté."
+        "en": "Name of the file played when a scene names none. Sample files: tone.wav, or tone.mp3 once you add it to the folder.",
+        "fr": "Nom du fichier joué quand une scène n'en nomme pas. Fichiers d'exemple : tone.wav, ou tone.mp3 dès que vous l'ajoutez au dossier."
       },
+      "placeholder": { "en": "tone.wav", "fr": "tone.wav" },
       "required": false,
-      "default": "tone.wav",
-      "options": [
-        { "value": "tone.wav", "label": { "en": "tone.wav (sample)" }, "sort_order": 1 },
-        { "value": "tone.mp3", "label": { "en": "tone.mp3 (after you add it)" }, "sort_order": 2 }
-      ]
+      "default": "tone.wav"
     },
     {
       "key": "volume_max",
