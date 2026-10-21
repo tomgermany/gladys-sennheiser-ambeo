@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Shown when the soundbar is created. Glitches to know about.
+// Shown when   the soundbar is created. Glitches to know about.
 // -----------------------------------------------------------------------------
 
 export const DISCOVERY_GLITCH = {
