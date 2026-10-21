@@ -52,3 +52,14 @@ volume feature.
 
 The soundbar API is not officially documented; the paths follow the open-source
 pyambeo library. Playback of a file is not verified against a device yet.
+
+## Legal notice
+
+This is an independent, unofficial project. It is **not affiliated with, authorised,
+endorsed or sponsored by Sennheiser electronic SE & Co. KG** or any of its subsidiaries,
+and it is not an official Sennheiser product or service.
+
+**Sennheiser** and **AMBEO** are trademarks or registered trademarks of
+[Sennheiser electronic SE & Co. KG](https://www.sennheiser.com/), used here only to
+describe the hardware this integration works with. All other trademarks, product names
+and company names are the property of their respective owners.

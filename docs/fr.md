@@ -51,3 +51,15 @@ déclencheur « l'état d'un appareil change » de Gladys sur la fonction volume
 
 L'API de la barre n'est pas documentée officiellement ; les chemins suivent la bibliothèque
 open source pyambeo. La lecture d'un fichier n'est pas encore vérifiée sur un appareil.
+
+## Mention légale
+
+Ce projet est **indépendant et non officiel**. Il **n'est ni affilié, ni autorisé, ni
+approuvé, ni sponsorisé par Sennheiser electronic SE & Co. KG** ni par aucune de ses
+filiales : ce n'est pas un produit ni un service officiel de Sennheiser.
+
+**Sennheiser** et **AMBEO** sont des marques ou des marques déposées de
+[Sennheiser electronic SE & Co. KG](https://www.sennheiser.com/), utilisées ici uniquement
+pour décrire le matériel avec lequel cette intégration fonctionne. Toutes les autres
+marques, noms de produits et noms de sociétés appartiennent à leurs propriétaires
+respectifs.
