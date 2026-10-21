@@ -7,7 +7,10 @@ The Plus is the reference model; Mini and Max are supported the same way.
 
 1. Find the soundbar's IP address (Smart Control app or your router).
 2. Enter it in the integration's **Configuration** screen.
-3. Run a device scan: one device with all settings your model supports is created.
+3. Press **Test the connection**: it reads the soundbar now and says what it
+   answered (model, firmware, number of inputs, volume). If it reports an error,
+   the address is wrong or the soundbar is not reachable on its port 80.
+4. Run a device scan: one device with all settings your model supports is created.
 
 ## Device features
 
@@ -19,6 +22,9 @@ the Max exposes the AMBEO level and the center/side/up-firing levels instead.
 Power follows the model: the Max can be woken from standby and put back, the button
 of the widget is hidden on the other models.
 
+A model that does not answer a whole group of settings (some firmware versions do not)
+still appears: what it does not answer is logged and skipped.
+
 ## Widget "Soundbar remote"
 
 Power on/off, volume down/up (step configurable), mute, and one button per selectable
@@ -29,10 +35,10 @@ input.
 **Action "Play a sound on the soundbar"** plays an MP3 or WAV:
 
 - **File of the "sounds" folder**: the integration serves the file itself and the
-  soundbar fetches it. Open the integration's "sounds" port from the Apps screen,
-  drop your MP3 or WAV there, then pick it in the action (leave the name empty to
-  use the default sound of the configuration). A three second sample tone
-  (`tone.wav`) ships with the integration.
+  soundbar fetches it. The folder lives in the integration's own data volume, and
+  the default sound is named in the configuration (leave the scene field empty to
+  use it). A three second sample tone (`tone.wav`) ships with the integration and
+  is installed on first start.
 - **http(s) URL**: a direct link to the file, reachable by the soundbar.
 
 The optional **volume** field sets the volume before playing.

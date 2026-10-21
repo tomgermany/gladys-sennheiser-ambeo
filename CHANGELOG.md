@@ -26,9 +26,36 @@ the notes of the version's GitHub Release.
 - A sample three second alarm tone (`assets/sounds/tone.wav`), installed in the
   "sounds" folder on first start.
 - Scene trigger `volume_threshold_crossed`, with the limits set in the
-  configuration (too loud above / too quiet below, 0 disables a side).
+  configuration (too loud above / too quiet below, 0 disables a side). Fires on
+  the crossing only, with a hysteresis band so a volume near the limit does not
+  flap.
 - Scene actions `read_state` (volume, mute, input, sound profile, codec) and
   `set_volume`.
+- Configuration button **"Test the connection"**: reads the soundbar now and
+  answers in words (model, firmware, number of inputs, volume). Use it when a
+  device scan ends without a device.
+- A legal notice in the README and both user-documentation pages: independent
+  unofficial project, no affiliation with Sennheiser electronic SE & Co. KG,
+  the Sennheiser and AMBEO marks acknowledged.
+
+### Changed
+
+- Answers from the soundbar are read as text first: an empty or non-JSON answer
+  now names its path and the beginning of the raw answer instead of failing as a
+  bare "Invalid JSON".
+- The optional groups (sources, presets, numeric ranges, custom input names) no
+  longer take the whole connection down: what a model does not answer is logged
+  and skipped, so a partial soundbar still appears in Gladys.
+- The default sound of the scenes is a text field holding the file name, because
+  Gladys refuses `sort_order` on `config_schema` options.
+- Formatting and indentation are not checked any more: Prettier is deliberately
+  not used in this project.
+- The device is addressed by serial number when the soundbar reports one, so a
+  changed IP address does not create a second device.
+
+### Removed
+
+- The Transitous integration this repository started from.
 
 ## [1.0.0]
 
