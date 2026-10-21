@@ -74,12 +74,12 @@ export const SCENE_ACTIONS = {
     if (!client) throw new Error('Soundbar not connected');
     const source = fields.source === 'url' ? 'url' : 'data';
     let name = null;
-    let url = null;
+    let url;
     if (source === 'url') {
-      if (!/^https?:\/\//i.test(String(fields.url ?? ''))) {
+      url = String(fields.url ?? '');
+      if (!/^https?:\/\//i.test(url)) {
         throw new Error('A http(s) URL is required');
       }
-      url = String(fields.url);
     } else {
       name = String(fields.file || config.default_sound || '').replace(/^.*[/\\]/, '');
       if (!name) throw new Error('No sound file chosen');
