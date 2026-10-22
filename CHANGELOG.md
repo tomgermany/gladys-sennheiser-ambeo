@@ -10,148 +10,56 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
-## [3.3.0] - 2026-10-19
-
-## [3.2.0] - 2026-10-19
-
-## [3.1.1] - 2026-10-19
-
-## [3.1.0] - 2026-10-18
-
-## [3.0.2] - 2026-10-18
-
-## [3.0.1] - 2026-10-18
-
-## [3.0.0] - 2026-10-17
-
-## [2.0.1] - 2026-10-17
-
-## [2.0.0] - 2026-10-17
-
-## [1.5.2] - 2026-10-17
-
-## [1.5.1] - 2026-10-17
-
-## [1.5.0] - 2026-10-16
-
-## [1.4.2] - 2026-10-16
-
-## [1.4.1] - 2026-10-16
-
-## [1.4.0] - 2026-10-16
-
-## [1.3.3] - 2026-10-15
-
-## [1.3.2] - 2026-10-15
-
-## [1.3.1] - 2026-10-15
-
-## [1.3.0] - 2026-10-15
-
-## [1.2.2] - 2026-10-15
-
-## [1.2.1] - 2026-10-15
-
-## [1.2.0] - 2026-10-15
-
-## [1.1.7] - 2026-10-15
-
-## [1.1.6] - 2026-10-15
-
-## [1.1.5] - 2026-10-15
-
-## [1.1.4] - 2026-10-15
-
-## [1.1.3] - 2026-10-15
-
-## [1.1.2] - 2026-10-15
-
-## [1.1.1] - 2026-10-15
-
-## [1.1.0] - 2026-10-15
-
-## [1.0.4] - 2026-10-15
-
-## [1.0.3] - 2026-10-14
-
-## [1.0.2] - 2026-10-14
-
-## [1.0.1] - 2026-10-14
-
 ### Added
 
-- A working example of scene triggers, scene actions and dashboard widgets
-  (Gladys 5.1.0 or later).
-- `CHANGELOG.md`, rolled by the Release workflow.
-- A GitHub Release for every version, with its changelog section as notes: the
-  Gladys Supervision page links each version to the repository's releases.
-- CI runs the tests on Node 22 and 24, and builds the Docker image.
-- Dependabot keeps the npm dependencies and the GitHub Actions up to date.
-- `SECURITY.md` (how to report a vulnerability) and `CLAUDE.md` (project rules
-  for contributors and coding assistants).
-- Manifest tests: `version` matches `package.json`, `docker_image` is tagged
-  with it, descriptions hold 10 to 100 characters, placeholders are
-  multi-language objects.
-- The latitude and longitude fields show an example value as placeholder.
+- The soundbar as one Gladys device: power, volume, mute, input, sound profile,
+  night mode, AMBEO mode and level, voice enhancement, sound feedback,
+  subwoofer, center/side/up-firing levels, center volume, LED, logo and display
+  brightness, Bluetooth pairing, eco mode, audio codec and now playing. The
+  features follow the model: a Mini gets what it answers, the Max gets the
+  AMBEO level and the firing levels.
+- Dashboard widget "Soundbar remote": power, volume down/up, mute and one
+  button per selectable input.
+- Scene action `play_sound`: play an MP3 or WAV, from a http(s) URL that the
+  soundbar fetches itself, or from a file of the integration's "sounds" folder,
+  served by the integration on its own port.
+- A sample three second alarm tone (`assets/sounds/tone.wav`), installed in the
+  "sounds" folder on first start.
+- Scene trigger `volume_threshold_crossed`, with the limits set in the
+  configuration (too loud above / too quiet below, 0 disables a side). Fires on
+  the crossing only, with a hysteresis band so a volume near the limit does not
+  flap.
+- Scene actions `read_state` (volume, mute, input, sound profile, codec) and
+  `set_volume`.
+- Configuration button **"Test the connection"**: reads the soundbar now and
+  answers in words (model, firmware, number of inputs, volume). Use it when a
+  device scan ends without a device.
+- A legal notice in the README and both user-documentation pages: independent
+  unofficial project, no affiliation with Sennheiser electronic SE & Co. KG,
+  the Sennheiser and AMBEO marks acknowledged.
 
 ### Changed
 
-- Node.js 22 or later is required (Node 20 is end-of-life).
-- Integration SDK 0.15.0. The tests now run against the fake Gladys of the
-  SDK, which refuses the payloads Gladys refuses.
-- The refresh interval is one minute minimum, the fastest Gladys polls a
-  device. The plug's power is only sent when it changes, and every 30
-  minutes otherwise.
+- Answers from the soundbar are read as text first: an empty or non-JSON answer
+  now names its path and the beginning of the raw answer instead of failing as a
+  bare "Invalid JSON".
+- The optional groups (sources, presets, numeric ranges, custom input names) no
+  longer take the whole connection down: what a model does not answer is logged
+  and skipped, so a partial soundbar still appears in Gladys.
+- The default sound of the scenes is a text field holding the file name, because
+  Gladys refuses `sort_order` on `config_schema` options.
+- Formatting and indentation are not checked any more: Prettier is deliberately
+  not used in this project.
+- The device is addressed by serial number when the soundbar reports one, so a
+  changed IP address does not create a second device.
 
-### Fixed
+### Removed
 
-- Gladys refused the devices of the Discovery tab: the weather station and
-  the plug declared their poll frequency in seconds instead of one of the
-  values Gladys accepts, and were never polled. They now poll every minute,
-  and the readings follow the refresh interval of the configuration.
+- The Transitous integration this repository started from.
 
-- The release commit no longer fails `npm run format:check`: the Release
-  workflow updates the manifest `version` and `docker_image` in place instead
-  of re-printing the whole file with `jq`.
-- The integration can write to `/data`: the image creates the directory owned
-  by the `node` user, a new Docker volume was owned by root.
-- A sub-container running the integration's own image follows it to the new
-  tag at each release, as well as in the manifest of the build summary: it kept
-  the previous tag, which may not exist on the registry. Sub-containers on a
-  third-party image (a broker, a database...) keep theirs.
+## [1.0.0]
 
-[Unreleased]: https://github.com/tomgermany/gladys-transitous-departures/compare/v3.3.0...HEAD
-[3.3.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v3.2.0...v3.3.0
-[3.2.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v3.1.1...v3.2.0
-[3.1.1]: https://github.com/tomgermany/gladys-transitous-departures/compare/v3.1.0...v3.1.1
-[3.1.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v3.0.2...v3.1.0
-[3.0.2]: https://github.com/tomgermany/gladys-transitous-departures/compare/v3.0.1...v3.0.2
-[3.0.1]: https://github.com/tomgermany/gladys-transitous-departures/compare/v3.0.0...v3.0.1
-[3.0.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v2.0.1...v3.0.0
-[2.0.1]: https://github.com/tomgermany/gladys-transitous-departures/compare/v2.0.0...v2.0.1
-[2.0.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.5.2...v2.0.0
-[1.5.2]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.5.1...v1.5.2
-[1.5.1]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.5.0...v1.5.1
-[1.5.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.4.2...v1.5.0
-[1.4.2]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.4.1...v1.4.2
-[1.4.1]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.4.0...v1.4.1
-[1.4.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.3.3...v1.4.0
-[1.3.3]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.3.2...v1.3.3
-[1.3.2]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.3.1...v1.3.2
-[1.3.1]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.3.0...v1.3.1
-[1.3.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.2.2...v1.3.0
-[1.2.2]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.2.1...v1.2.2
-[1.2.1]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.2.0...v1.2.1
-[1.2.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.1.7...v1.2.0
-[1.1.7]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.1.6...v1.1.7
-[1.1.6]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.1.5...v1.1.6
-[1.1.5]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.1.4...v1.1.5
-[1.1.4]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.1.3...v1.1.4
-[1.1.3]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.1.2...v1.1.3
-[1.1.2]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.1.1...v1.1.2
-[1.1.1]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.1.0...v1.1.1
-[1.1.0]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.0.4...v1.1.0
-[1.0.4]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.0.3...v1.0.4
-[1.0.3]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.0.2...v1.0.3
-[1.0.2]: https://github.com/tomgermany/gladys-transitous-departures/compare/v1.0.1...v1.0.2
-[1.0.1]: https://github.com/tomgermany/gladys-transitous-departures/releases/tag/v1.0.1
+First release: Sennheiser AMBEO Soundbar Max, Plus and Mini.
+
+[Unreleased]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/tomgermany/gladys-sennheiser-ambeo/releases/tag/v1.0.0

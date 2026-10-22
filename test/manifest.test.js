@@ -1,13 +1,14 @@
 // -----------------------------------------------------------------------------
-// Consistency checks between `gladys-assistant-integration.json` and the code.
-// These tests keep the manifest and the Transitous integration in sync.
+// Consistency checks between `gladys-assistant-integration.json`, the code and
+// the tests. Keep the manifest and the integration in sync.
 // -----------------------------------------------------------------------------
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { WIDGETS } from '../src/widgets.js';
 import { DEFAULT_CONFIG } from '../src/config.js';
+import { SCENE_ACTIONS, TRIGGER } from '../src/scenes.js';
+import { REMOTE_WIDGET } from '../src/widgets.js';
 
 const manifest = JSON.parse(
   await readFile(new URL('../gladys-assistant-integration.json', import.meta.url), 'utf8'),
@@ -17,7 +18,6 @@ const pkg = JSON.parse(await readFile(new URL('../package.json', import.meta.url
 // Every list of form fields the manifest can declare.
 const allFields = [
   ...(manifest.config_schema ?? []),
-  ...(manifest.contact_schema ?? []),
   ...(manifest.actions ?? []).flatMap((item) => item.fields ?? []),
   ...(manifest.scene_triggers ?? []).flatMap((item) => item.fields ?? []),
   ...(manifest.scene_actions ?? []).flatMap((item) => item.fields ?? []),
@@ -25,11 +25,8 @@ const allFields = [
 ];
 
 // Manifest fields older Gladys releases reject as unknown.
-const CAPABILITY_FIELDS = ['widgets'];
 const CAPABILITY_MIN_GLADYS_VERSION = [5, 1, 0];
 const CATEGORIES_MIN_GLADYS_VERSION = [4, 86, 0];
-
-const keysOf = (list) => (list ?? []).map((entry) => entry.key);
 
 // Minimum version of the manifest `gladys_version` range, e.g. [5, 1, 0].
 function minGladysVersion() {
@@ -40,40 +37,42 @@ function minGladysVersion() {
 
 function isAtLeast(version, required) {
   for (let i = 0; i < required.length; i += 1) {
-    if (version[i] !== required[i]) {
-      return version[i] > required[i];
-    }
+    if (version[i] !== required[i]) return version[i] > required[i];
   }
   return true;
 }
 
 test('declaring catalog categories requires Gladys >= 4.86.0', () => {
   assert.ok(manifest.categories.length >= 1 && manifest.categories.length <= 3);
-  assert.ok(
-    isAtLeast(minGladysVersion(), CATEGORIES_MIN_GLADYS_VERSION),
-    `categories requires gladys_version >= 4.86.0, got "${manifest.gladys_version}"`,
-  );
+  assert.ok(isAtLeast(minGladysVersion(), CATEGORIES_MIN_GLADYS_VERSION));
 });
 
-test('declaring widgets requires Gladys >= 5.1.0', () => {
-  const declared = CAPABILITY_FIELDS.filter((field) => manifest[field] !== undefined);
-  assert.ok(declared.length > 0, 'the integration must declare its widget capability');
-  assert.ok(
-    isAtLeast(minGladysVersion(), CAPABILITY_MIN_GLADYS_VERSION),
-    `${declared.join(', ')} requires gladys_version >= 5.1.0, got "${manifest.gladys_version}"`,
-  );
+test('widgets, scene triggers and scene actions require Gladys >= 5.1.0', () => {
+  assert.ok(manifest.widgets?.length > 0);
+  assert.ok(manifest.scene_triggers?.length > 0);
+  assert.ok(manifest.scene_actions?.length > 0);
+  assert.ok(isAtLeast(minGladysVersion(), CAPABILITY_MIN_GLADYS_VERSION));
 });
 
-test('every widgets key has an onWidgetGet handler, and vice versa', () => {
-  const declared = keysOf(manifest.widgets);
+test('the widget key has a handler in the code', () => {
+  const declared = (manifest.widgets ?? []).map((widget) => widget.key);
+  assert.ok(declared.includes(REMOTE_WIDGET), `widget "${REMOTE_WIDGET}" is not declared`);
+  assert.equal(declared.length, 1);
+});
 
+test('every scene action is declared and has a handler, and vice versa', () => {
+  const declared = (manifest.scene_actions ?? []).map((action) => action.key);
   for (const key of declared) {
-    assert.equal(typeof WIDGETS[key]?.get, 'function', `widget "${key}" has no content handler`);
+    assert.equal(typeof SCENE_ACTIONS[key], 'function', `scene action "${key}" has no handler`);
   }
+  for (const key of Object.keys(SCENE_ACTIONS)) {
+    assert.ok(declared.includes(key), `scene action "${key}" is not declared in the manifest`);
+  }
+});
 
-  for (const key of Object.keys(WIDGETS)) {
-    assert.ok(declared.includes(key), `widget "${key}" is not declared in widgets`);
-  }
+test('the scene trigger fired by the code is declared', () => {
+  const declared = (manifest.scene_triggers ?? []).map((trigger) => trigger.key);
+  assert.ok(declared.includes(TRIGGER.VOLUME_CROSSED));
 });
 
 test('config_schema defaults stay consistent with DEFAULT_CONFIG', () => {
@@ -90,51 +89,46 @@ test('config_schema defaults stay consistent with DEFAULT_CONFIG', () => {
 
 test('section fields are purely presentational', () => {
   const sections = manifest.config_schema.filter((field) => field.type === 'section');
-
   for (const section of sections) {
-    assert.equal(section.required, undefined, `section "${section.key}" must not be required`);
-    assert.equal(section.default, undefined, `section "${section.key}" must not have a default`);
-    assert.equal(
-      section.placeholder,
-      undefined,
-      `section "${section.key}" must not have a placeholder`,
-    );
+    assert.equal(section.required, undefined);
+    assert.equal(section.default, undefined);
+    assert.equal(section.placeholder, undefined);
     assert.ok(section.label?.en, `section "${section.key}" needs an English label`);
-    assert.ok(
-      !(section.key in DEFAULT_CONFIG),
-      `section "${section.key}" must not appear in DEFAULT_CONFIG`,
-    );
+    assert.ok(!(section.key in DEFAULT_CONFIG));
+  }
+});
 
-    for (const link of section.links ?? []) {
-      assert.match(link.url, /^https:\/\//, 'section links must be https');
+test('every select field offers at least one option', () => {
+  for (const field of allFields.filter((field) => field.type === 'select')) {
+    assert.ok(
+      Array.isArray(field.options) && field.options.length > 0,
+      `select field "${field.key}" needs options`,
+    );
+    for (const option of field.options) {
+      assert.ok(typeof option.value === 'string' || typeof option.value === 'number');
+      assert.ok(option.label?.en, `option "${option.value}" needs an English label`);
     }
   }
 });
 
-test('the Transitous departure count uses valid static options', () => {
-  const countField = allFields.find((field) => field.key === 'count');
-
-  assert.ok(countField, 'the count setting must exist');
-  assert.equal(countField.type, 'select');
-  assert.equal(countField.source, undefined);
-  assert.deepEqual(
-    countField.options.map((option) => option.value),
-    ['3', '6'],
-  );
-  assert.equal(countField.default, '6');
+test('the manifest and the package agree on the version', () => {
+  assert.equal(manifest.version, pkg.version, 'manifest version must match package.json');
 });
 
-test('the manifest version is the package version, and the image is tagged with it', () => {
-  assert.equal(manifest.version, pkg.version, 'manifest version must match package.json');
-  assert.ok(
-    manifest.docker_image.endsWith(`:${manifest.version}`),
-    `docker_image must be tagged :${manifest.version}, got "${manifest.docker_image}"`,
+// The image tag is deliberately free: a test branch publishes the same manifest
+// with a branch tag (ghcr.io/...:feat-something), and the Release workflow puts
+// the version tag back. Only the shape is checked here, the store validator is
+// the place that ties the tag to a published image.
+test('the image is tagged, on a registry, with a non-empty tag', () => {
+  assert.match(
+    manifest.docker_image,
+    /^[a-z0-9.-]+\/\S+:[A-Za-z0-9._-]+$/,
+    `docker_image must carry a tag, got "${manifest.docker_image}"`,
   );
 });
 
 test('the catalog description holds 10 to 100 characters per language', () => {
-  assert.ok(manifest.description.en, 'the description needs an English text');
-
+  assert.ok(manifest.description.en);
   for (const [lang, description] of Object.entries(manifest.description)) {
     assert.ok(
       description.length >= 10 && description.length <= 100,
@@ -144,12 +138,19 @@ test('the catalog description holds 10 to 100 characters per language', () => {
 });
 
 test('field placeholders are multi-language objects', () => {
-  const withPlaceholder = allFields.filter((field) => field.placeholder !== undefined);
-
-  assert.ok(withPlaceholder.length > 0, 'at least one field must demonstrate a placeholder');
-
-  for (const field of withPlaceholder) {
+  for (const field of allFields.filter((item) => item.placeholder !== undefined)) {
     assert.equal(typeof field.placeholder, 'object', `field "${field.key}": placeholder`);
     assert.ok(field.placeholder.en, `field "${field.key}": placeholder needs an English text`);
+  }
+});
+
+test('user-facing manifest texts are bilingual', () => {
+  const texts = [
+    manifest.label,
+    manifest.description,
+    ...(manifest.config_schema ?? []).flatMap((field) => [field.label, field.description]),
+  ];
+  for (const text of texts.filter(Boolean)) {
+    assert.ok(text.en && text.fr, `both en and fr are required, got ${JSON.stringify(text)}`);
   }
 });

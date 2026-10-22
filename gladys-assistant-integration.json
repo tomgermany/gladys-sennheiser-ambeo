@@ -1,453 +1,464 @@
-
 {
   "manifest_version": 1,
-  "type": "provider",
-  "name": "Transitous Departures",
+  "type": "device",
+  "name": "Sennheiser AMBEO Soundbar",
   "description": {
-    "en": "Nearby public transport departures on the Gladys dashboard, powered by Transitous.",
-    "es": "Próximas salidas de transporte público en el panel de Gladys, con tecnología de Transitous.",
-    "de": "Abfahrten in der Nähe im Gladys-Dashboard, bereitgestellt von Transitous.",
-    "fr": "Départs des transports publics à proximité sur le tableau de bord Gladys, grâce à Transitous.",
-    "ko": "Transitous에서 제공하는 Gladys 대시보드의 주변 대중교통 출발 정보입니다.",
-    "kl": "Transitous atorlugu Gladys dashboard-imi qanitsumi qatserisut/angallatit aallartarfii."
+    "de": "Steuert und überwacht Sennheiser AMBEO Soundbars Max, Plus und Mini im lokalen Netzwerk.",
+    "en": "Control and monitor Sennheiser AMBEO Soundbar Max, Plus and Mini over your local network.",
+    "fr": "Pilotez les barres de son Sennheiser AMBEO Max, Plus et Mini sur votre réseau local.",
+    "es": "Controla las barras de sonido Sennheiser AMBEO Max, Plus y Mini en tu red local."
   },
-  "version": "3.3.0",
-  "docker_image": "ghcr.io/tomgermany/gladys-transitous-departures:3.3.0",
-  "gladys_version": ">=5.2.0",
-  "cover_image": "https://raw.githubusercontent.com/tomgermany/gladys-transitous-departures/main/cover.png",
-  "categories": [
-    "services"
-  ],
-  "transports": [
-    "cloud"
-  ],
-  "location": true,
+  "version": "1.0.0",
+  "docker_image": "ghcr.io/tomgermany/gladys-sennheiser-ambeo:feat-ambeo-soundbar-integration",
+  "gladys_version": ">=5.1.0",
+  "categories": ["music"],
+  "transports": ["local"],
   "config_schema": [
     {
-      "key": "widget_setup_info",
-      "type": "section",
+      "key": "host",
+      "type": "string",
       "label": {
-        "de": "Hinweis zur Einrichtung",
-        "en": "Widget setup information",
-        "fr": "Informations de configuration du widget",
-        "ko": "위젯 설정 정보",
-        "kl": "Widget-imut paasissutissat ivertitsinermut"
+        "de": "IP-Adresse der Soundbar",
+        "en": "Soundbar IP address",
+        "fr": "Adresse IP de la barre de son",
+        "es": "Dirección IP de la barra de sonido"
       },
       "description": {
-        "de": "Bitte legen Sie vor dem Hinzufügen des Widgets zum Dashboard die Koordinaten Ihres gewünschten Standorts fest. Benötigt werden Breitengrad und Längengrad im Dezimalformat, zum Beispiel 49.350 und 8.690. Beim Hinzufügen des Widgets stellen Sie anschließend Suchradius, Anzahl der Abfahrten und Aktualisierungsintervall ein. Der Standard-Suchradius beträgt 2.000 Meter. Fahrplandaten: Transitous. Informationen zu Datenquellen und Quellenangaben: https://transitous.org/sources/",
-        "es": "Antes de añadir el widget al panel de control, especifique las coordenadas de la ubicación deseada. Se necesitan la latitud y la longitud en formato decimal, por ejemplo, 49,350 y 8,690. Al añadir el widget, configure a continuación el radio de búsqueda, el número de salidas y el intervalo de actualización. El radio de búsqueda predeterminado es de 2.000 metros. Datos de horarios: Transitous. Información sobre las fuentes de datos y la atribución: https://transitous.org/sources/",
-        "en": "Before adding the widget to your dashboard, determine the coordinates of your chosen location. You need latitude and longitude in decimal format, for example 49.350 and 8.690. When adding the widget, you can then configure the search radius, number of departures and refresh interval. The default search radius is 2,000 metres. Timetable data: Transitous. Information about data sources and attribution: https://transitous.org/sources/",
-        "fr": "Avant d’ajouter le widget à votre tableau de bord, déterminez les coordonnées du lieu choisi. Vous avez besoin de la latitude et de la longitude au format décimal, par exemple 49.350 et 8.690. Lors de l’ajout du widget, vous pourrez définir le rayon de recherche, le nombre de départs et l’intervalle d’actualisation. Le rayon de recherche par défaut est de 2 000 mètres. Données horaires : Transitous. Informations sur les sources de données et les crédits : https://transitous.org/sources/",
-        "ko": "대시보드에 위젯을 추가하기 전에 원하는 위치의 좌표를 지정해 주세요. 소수점 형식의 위도와 경도가 필요합니다 (예: 49.350 및 8.690). 위젯을 추가할 때 검색 반경, 출발 정보 수 및 새로고침 간격을 설정할 수 있습니다. 기본 검색 반경은 2,000미터입니다. 시간표 데이터: Transitous. 데이터 출처 및 출처 표기 정보: https://transitous.org/sources/",
-        "kl": "Widget dashboard-imut ilanngutsinnagu, sumiiffissat attatiuk. Sanimut tveq aamma tveq decimal-itut pisariaqarput, assersuutigalugu 49.350 aamma 8.690. Widget ilanngukkukku ujaasiffik, aallartussat qassit aamma nutarteriffik ivertissinnaavat. Ujaasiffik nalinginnaasoq 2.000 meteriuvoq. Aallakaatitsinermut paasissutissat: Transitous. Paasissutissat suminngaanneernerat aamma unnersuussissutit: https://transitous.org/sources/"
+        "de": "IP-Adresse oder Hostname der Soundbar (in der Smart-Control-App oder in Ihrem Router zu finden).",
+        "en": "IP address or hostname of the soundbar (shown in the Smart Control app or your router).",
+        "fr": "Adresse IP ou nom d'hôte de la barre de son (visible dans l'app Smart Control ou votre routeur).",
+        "es": "Dirección IP o nombre de host de la barra (en la app Smart Control o en tu router)."
+      },
+      "placeholder": { "de": "z. B. 192.168.1.50", "en": "e.g. 192.168.1.50", "fr": "ex. 192.168.1.50", "es": "p. ej. 192.168.1.50" },
+      "required": true
+    },
+    {
+      "key": "poll_frequency",
+      "type": "number",
+      "label": {
+        "de": "Abfrageintervall (s)",
+        "en": "Refresh interval (s)",
+        "fr": "Intervalle de rafraîchissement (s)",
+        "es": "Intervalo de actualización (s)"
+      },
+      "description": {
+        "de": "Wie oft der Zustand gelesen wird, in Sekunden (mindestens eine Minute).",
+        "en": "How often the soundbar state is read, in seconds (one minute minimum).",
+        "fr": "Fréquence de lecture de l'état, en secondes (une minute minimum).",
+        "es": "Cada cuánto se lee el estado, en segundos (mínimo un minuto)."
+      },
+      "required": false,
+      "default": 60,
+      "min": 60,
+      "max": 3600
+    },
+    {
+      "key": "volume_step",
+      "type": "number",
+      "label": {
+        "de": "Lautstärkeschritt im Widget",
+        "en": "Widget volume step",
+        "fr": "Pas de volume du widget",
+        "es": "Paso de volumen del widget"
+      },
+      "description": {
+        "de": "Lautstärkeeinheiten, die die Tasten „Lauter“ und „Leiser“ ändern.",
+        "en": "Volume units added or removed by the Louder / Quieter buttons.",
+        "fr": "Unités de volume ajoutées ou retirées par les boutons Plus fort / Moins fort.",
+        "es": "Unidades de volumen que suman o restan los botones de subir y bajar."
+      },
+      "required": false,
+      "default": 5,
+      "min": 1,
+      "max": 20
+    },
+    {
+      "key": "sounds_intro",
+      "type": "section",
+      "label": {
+        "de": "Töne der Szenen",
+        "en": "Sounds of the scenes",
+        "fr": "Sons des scènes",
+        "es": "Sonidos de las escenas"
+      },
+      "description": {
+        "de": "Die Tondateien werden von der Integration selbst bereitgestellt: Öffnen Sie den Töne-Port der Integration, legen Sie dort Ihre MP3- oder WAV-Dateien ab und laden Sie diesen Bildschirm neu. Beim ersten Start wird ein Beispielton von drei Sekunden installiert.",
+        "en": "The sound files are served by the integration itself on its own port: open that port, drop your MP3 or WAV files there, then reload this screen. A three second sample tone is installed on first start.",
+        "fr": "Les fichiers sons sont servis par l'intégration elle-même sur son propre port : ouvrez ce port, déposez vos MP3 ou WAV, puis rechargez cet écran. Un son d'exemple de trois secondes est installé au premier démarrage.",
+        "es": "Los archivos de sonido los sirve la propia integración en su puerto: ábrelo, deja allí tus MP3 o WAV y recarga esta pantalla. En el primer arranque se instala un tono de ejemplo de tres segundos."
       }
+    },
+    {
+      "key": "default_sound",
+      "type": "string",
+      "label": {
+        "de": "Standard-Tondatei",
+        "en": "Default sound file",
+        "fr": "Fichier son par défaut",
+        "es": "Archivo de sonido por defecto"
+      },
+      "description": {
+        "de": "Dateiname, der abgespielt wird, wenn eine Szene keinen nennt. Beispiel: tone.wav, oder tone.mp3 sobald Sie ihn ablegen.",
+        "en": "Name of the file played when a scene names none. Sample files: tone.wav, or tone.mp3 once you add it to the folder.",
+        "fr": "Nom du fichier joué quand une scène n'en nomme pas. Fichiers d'exemple : tone.wav, ou tone.mp3 dès que vous l'ajoutez au dossier.",
+        "es": "Nombre del archivo que se reproduce cuando una escena no indica ninguno. Ejemplos: tone.wav, o tone.mp3 en cuanto lo añadas."
+      },
+      "placeholder": { "de": "tone.wav", "en": "tone.wav", "fr": "tone.wav", "es": "tone.wav" },
+      "required": false,
+      "default": "tone.wav"
+    },
+    {
+      "key": "volume_max",
+      "type": "number",
+      "label": {
+        "de": "Zu laut oberhalb",
+        "en": "Too loud above",
+        "fr": "Trop fort au-delà de",
+        "es": "Demasiado alto por encima de"
+      },
+      "description": {
+        "de": "Löst „Lautstärke überschreitet eine Grenze“ aus, wenn die Lautstärke darüber steigt. 0 schaltet ab.",
+        "en": "Fires the 'volume crossed a limit' trigger when the volume goes above this value. 0 disables it.",
+        "fr": "Déclenche « le volume franchit une limite » quand le volume dépasse cette valeur. 0 désactive.",
+        "es": "Activa «el volumen cruza un límite» cuando el volumen supera este valor. 0 lo desactiva."
+      },
+      "required": false,
+      "default": 70,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "volume_min",
+      "type": "number",
+      "label": {
+        "de": "Zu leise unterhalb",
+        "en": "Too quiet below",
+        "fr": "Trop faible en dessous de",
+        "es": "Demasiado bajo por debajo de"
+      },
+      "description": {
+        "de": "Löst „Lautstärke überschreitet eine Grenze“ aus, wenn die Lautstärke darunter fällt. 0 schaltet ab.",
+        "en": "Fires the 'volume crossed a limit' trigger when the volume drops below this value. 0 disables it.",
+        "fr": "Déclenche « le volume franchit une limite » quand le volume passe sous cette valeur. 0 désactive.",
+        "es": "Activa «el volumen cruza un límite» cuando el volumen baja de este valor. 0 lo desactiva."
+      },
+      "required": false,
+      "default": 10,
+      "min": 0,
+      "max": 100
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "label": {
+        "de": "Verbindung testen",
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "es": "Probar la conexión"
+      },
+      "description": {
+        "de": "Liest die Soundbar jetzt und sagt, was sie geantwortet hat. Nützlich, wenn die Gerätesuche kein Gerät gefunden hat.",
+        "en": "Reads the soundbar now and says what it answered. Use it when the device scan ended without a device.",
+        "fr": "Interroge la barre maintenant et dit ce qu'elle a répondu. À utiliser quand la recherche d'appareils s'est terminée sans appareil.",
+        "es": "Consulta la barra ahora y dice lo que ha respondido. Útil cuando la búsqueda de dispositivos termina sin dispositivo."
+      },
+      "timeout_seconds": 30
     }
   ],
   "widgets": [
     {
-      "key": "transitous_departures",
+      "key": "remote",
       "label": {
-        "en": "Nearby transit departures",
-        "es": "Salidas cercanas",
-        "de": "Abfahrten in der Nähe",
-        "fr": "Départs à proximité",
-        "ko": "주변 대중교통 출발 정보",
-        "kl": "Angallatit aallartarfii"
+        "de": "Soundbar-Fernbedienung",
+        "en": "Soundbar remote",
+        "fr": "Télécommande barre de son",
+        "es": "Mando de la barra de sonido"
       },
       "description": {
-        "en": "Next public transport departures around a chosen location.",
-        "es": "Próximas salidas del transporte público cerca de la ubicación seleccionada.",
-        "de": "Die nächsten ÖPNV-Abfahrten an einem frei wählbaren Standort.",
-        "fr": "Les prochains départs des transports publics autour d'un lieu choisi.",
-        "ko": "선택한 위치 주변의 다음 대중교통 출발 정보입니다.",
-        "kl": "Sumiiffimmi toqqakkami angallatit aallartussat tulliuttut."
+        "de": "Lautstärke, Mute und Durchschalten der Eingänge, dazu die Lautstärke live.",
+        "en": "Volume, mute and input cycling, plus the live volume of one soundbar.",
+        "fr": "Volume, sourdine et défilement des entrées, plus le volume en direct d'une barre.",
+        "es": "Volumen, silencio y recorrido de entradas, además del volumen en directo."
       },
-      "icon": "map-pin",
+      "icon": "speaker",
+      "action_timeout_seconds": 15,
       "settings": [
         {
-          "key": "house",
+          "key": "device",
           "type": "select",
-          "source": "houses",
+          "source": "devices",
           "label": {
-            "en": "Select a Gladys house (optional)",
-            "es": "Selecciona una casa de Gladys (opcional)",
-            "de": "Gladys-Haus auswählen (optional)",
-            "fr": "Choisir une maison Gladys (facultatif)",
-            "ko": "Gladys 집 선택 (선택 사항)",
-            "kl": "Gladys illu toqqaruk (piumagaanni)"
+            "de": "Soundbar",
+            "en": "Soundbar",
+            "fr": "Barre de son",
+            "es": "Barra de sonido"
+          },
+          "description": {
+            "de": "Welche Soundbar diese Kachel steuert. Leer lassen für die erste.",
+            "en": "Which soundbar this tile drives. Leave empty for the first one.",
+            "fr": "Quelle barre cette tuile pilote. Vide = la première.",
+            "es": "Qué barra controla esta tarjeta. Vacío para la primera."
+          },
+          "required": false
+        },
+        {
+          "key": "show_volume_buttons",
+          "type": "boolean",
+          "label": {
+            "de": "Lautstärketasten anzeigen",
+            "en": "Show volume buttons",
+            "fr": "Afficher les boutons de volume",
+            "es": "Mostrar los botones de volumen"
+          },
+          "description": {
+            "de": "Abschaltbar, um den vierten Knopf für etwas anderes frei zu halten.",
+            "en": "Hide them to give the fourth button to something else later.",
+            "fr": "Les masquer pour libérer le quatrième bouton.",
+            "es": "Ocúltalos para dejar libre el cuarto botón."
+          },
+          "required": false,
+          "default": true
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "volume_threshold_crossed",
+      "label": {
+        "de": "Lautstärke überschreitet eine Grenze",
+        "en": "Volume crossed a limit",
+        "fr": "Le volume franchit une limite",
+        "es": "El volumen cruza un límite"
+      },
+      "description": {
+        "de": "Die Lautstärke der Soundbar ist über die Grenze „zu laut“ gestiegen oder unter die Grenze „zu leise“ gefallen.",
+        "en": "The soundbar volume went above the 'too loud' limit or below the 'too quiet' limit set in the configuration.",
+        "fr": "Le volume de la barre est passé au-dessus de la limite « trop fort » ou en dessous de la limite « trop faible ».",
+        "es": "El volumen de la barra ha superado el límite de «demasiado alto» o ha bajado del de «demasiado bajo»."
+      },
+      "fields": [
+        {
+          "key": "direction",
+          "type": "select",
+          "label": {
+            "de": "Richtung",
+            "en": "Direction",
+            "fr": "Sens",
+            "es": "Dirección"
+          },
+          "options": [
+            {
+              "value": "over",
+              "label": {
+                "de": "Zu laut",
+                "en": "Too loud",
+                "fr": "Trop fort",
+                "es": "Demasiado alto"
+              }
+            },
+            {
+              "value": "under",
+              "label": {
+                "de": "Zu leise",
+                "en": "Too quiet",
+                "fr": "Trop faible",
+                "es": "Demasiado bajo"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "direction",
+          "type": "string",
+          "label": { "de": "Richtung", "en": "Direction", "fr": "Sens", "es": "Dirección" }
+        },
+        {
+          "key": "limit",
+          "type": "number",
+          "label": { "de": "Grenze", "en": "Limit", "fr": "Limite", "es": "Límite" }
+        },
+        {
+          "key": "volume",
+          "type": "number",
+          "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "play_sound",
+      "label": {
+        "de": "Ton auf der Soundbar abspielen",
+        "en": "Play a sound on the soundbar",
+        "fr": "Jouer un son sur la barre de son",
+        "es": "Reproducir un sonido en la barra de sonido"
+      },
+      "description": {
+        "de": "Lässt die Soundbar eine MP3 oder WAV abspielen, entweder von einer http(s)-URL oder aus dem Ordner „sounds“.",
+        "en": "Makes the soundbar play an MP3 or WAV, either from a http(s) URL or from a file of its 'sounds' folder.",
+        "fr": "Fait jouer un MP3 ou WAV à la barre : depuis une URL http(s) ou depuis un fichier du dossier « sounds ».",
+        "es": "Hace que la barra reproduzca un MP3 o WAV, desde una URL http(s) o desde un archivo de su carpeta «sounds»."
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "source",
+          "type": "select",
+          "label": {
+            "de": "Quelle der Datei",
+            "en": "Source of the file",
+            "fr": "Source du fichier",
+            "es": "Origen del archivo"
+          },
+          "required": true,
+          "default": "data",
+          "options": [
+            {
+              "value": "data",
+              "label": {
+                "de": "Datei aus dem Ordner „sounds“",
+                "en": "File of the 'sounds' folder",
+                "fr": "Fichier du dossier « sounds »",
+                "es": "Archivo de la carpeta «sounds»"
+              }
+            },
+            {
+              "value": "url",
+              "label": {
+                "de": "http(s)-URL",
+                "en": "http(s) URL",
+                "fr": "URL http(s)",
+                "es": "URL http(s)"
+              }
+            }
+          ]
+        },
+        {
+          "key": "file",
+          "type": "string",
+          "label": {
+            "de": "Dateiname",
+            "en": "File name",
+            "fr": "Nom du fichier",
+            "es": "Nombre del archivo"
+          },
+          "description": {
+            "de": "Name der Datei im Ordner „sounds“, z. B. tone.wav. Leer verwendet den Standardton aus der Konfiguration.",
+            "en": "Name of the file in the integration's 'sounds' folder, e.g. tone.wav. Empty uses the default sound of the configuration.",
+            "fr": "Nom du fichier dans le dossier « sounds », ex. tone.wav. Vide = son par défaut de la configuration.",
+            "es": "Nombre del archivo en la carpeta «sounds», p. ej. tone.wav. Vacío usa el sonido por defecto de la configuración."
+          },
+          "placeholder": { "de": "tone.wav", "en": "tone.wav", "fr": "tone.wav", "es": "tone.wav" }
+        },
+        {
+          "key": "url",
+          "type": "string",
+          "label": {
+            "de": "Datei-URL",
+            "en": "File URL",
+            "fr": "URL du fichier",
+            "es": "URL del archivo"
+          },
+          "description": {
+            "de": "Direkter http(s)-Link zur Datei, erreichbar für die Soundbar.",
+            "en": "Direct http(s) link to the file, reachable by the soundbar.",
+            "fr": "Lien http(s) direct vers le fichier, joignable par la barre.",
+            "es": "Enlace http(s) directo al archivo, accesible desde la barra."
+          },
+          "placeholder": {
+            "de": "https://beispiel.de/warnton.mp3",
+            "en": "https://example.com/alarm.mp3",
+            "fr": "https://exemple.fr/alarme.mp3",
+            "es": "https://ejemplo.es/aviso.mp3"
           }
         },
         {
-          "key": "latitude",
+          "key": "volume",
           "type": "number",
           "label": {
-            "en": "Latitude",
-            "es": "Latitud",
-            "de": "Breitengrad",
-            "fr": "Latitude",
-            "ko": "위도",
-            "kl": "Sanimut tveq"
-          },
-          "placeholder": {
-            "en": "e.g. 49.350",
-            "es": "p. ej., 49 350",
-            "de": "z.B. 49.350",
-            "fr": "ex. 49.350",
-            "ko": "예: 49.350",
-            "kl": "ass. 49.350"
-          },
-          "required": false,
-          "min": -90,
-          "max": 90
-        },
-        {
-          "key": "longitude",
-          "type": "number",
-          "label": {
-            "en": "Longitude",
-            "es": "Longitud",
-            "de": "Längengrad",
-            "fr": "Longitude",
-            "ko": "경도",
-            "kl": "Tveq"
-          },
-          "placeholder": {
-            "en": "e.g. 8.690",
-            "es": "p. ej., 49 350",
-            "de": "z. B. 8.690",
-            "fr": "ex. 8.690",
-            "ko": "예: 8.690",
-            "kl": "ass. 8.690"
-          },
-          "required": false,
-          "min": -180,
-          "max": 180
-        },
-        {
-          "key": "radius1",
-          "type": "number",
-          "label": {
-            "en": "Search radius 1 (metres)",
-            "es": "Radio de búsqueda 1 (metros)",
-            "de": "Suchkreis 1 (Meter)",
-            "fr": "Rayon de recherche 1 (mètres)",
-            "ko": "검색 반경 1 (미터)",
-            "kl": "Ujaasiffik 1 (meter)"
+            "de": "Lautstärke (optional)",
+            "en": "Volume (optional)",
+            "fr": "Volume (optionnel)",
+            "es": "Volumen (opcional)"
           },
           "description": {
-            "en": "Initial search radius. Default: 500 metres. Maximum effective radius: 10 km.",
-            "es": "Radio inicial. Predeterminado: 500 metros. Radio máximo efectivo: 10 km.",
-            "de": "Erster Suchradius. Standard: 500 Meter. Achtung: Max. 10 km. Darüber wird begrenzt.",
-            "fr": "Rayon initial. Par défaut : 500 mètres. Rayon effectif maximal : 10 km.",
-            "ko": "초기 검색 반경. 기본값: 500미터. 최대 반경: 10km.",
-            "kl": "Ujaasiffik aallartittoq. Nalinginnaasoq: 500 meter. Annertunerpaamik: 10 km."
+            "de": "Lautstärke vor dem Abspielen, 0 bis 100. Leer lassen, um die aktuelle zu behalten.",
+            "en": "Volume to set before playing, 0 to 100. Leave empty to keep the current volume.",
+            "fr": "Volume à régler avant la lecture, de 0 à 100. Laisser vide pour garder le volume actuel.",
+            "es": "Volumen que se ajusta antes de reproducir, de 0 a 100. Vacío mantiene el actual."
           },
-          "required": true,
-          "default": 500,
-          "min": 1,
-          "max": 10000
-        },
-        {
-          "key": "radius2_add",
-          "type": "number",
-          "label": {
-            "en": "Search radius 2 (additional metres)",
-            "es": "Radio de búsqueda 2 (metros adicionales)",
-            "de": "Suchkreis 2 (zusätzliche Meter)",
-            "fr": "Rayon de recherche 2 (mètres supplémentaires)",
-            "ko": "검색 반경 2 (추가 미터)",
-            "kl": "Ujaasiffik 2 (meter ilassut)"
-          },
-          "description": {
-            "en": "Added to search radius 1. Default: 1,500 metres.",
-            "es": "Se suma al radio 1. Predeterminado: 1.500 metros.",
-            "de": "Wird zu Suchkreis 1 addiert. Standard: 1.500 Meter.",
-            "fr": "S'ajoute au rayon 1. Par défaut : 1 500 mètres.",
-            "ko": "검색 반경 1에 추가됩니다. 기본값: 1,500미터.",
-            "kl": "Ujaasiffik 1-imut ilassutaavoq. Nalinginnaasoq: 1.500 meter."
-          },
-          "required": true,
-          "default": 1500,
           "min": 0,
-          "max": 10000
-        },
-        {
-          "key": "radius3_add",
-          "type": "number",
-          "label": {
-            "en": "Search radius 3 (additional metres)",
-            "es": "Radio de búsqueda 3 (metros adicionales)",
-            "de": "Suchkreis 3 (zusätzliche Meter)",
-            "fr": "Rayon de recherche 3 (mètres supplémentaires)",
-            "ko": "검색 반경 3 (추가 미터)",
-            "kl": "Ujaasiffik 3 (meter ilassut)"
-          },
-          "description": {
-            "en": "Added to search radii 1 and 2. Default: 3,000 metres.",
-            "es": "Se suma a los radios 1 y 2. Predeterminado: 3.000 metros.",
-            "de": "Wird zu Suchkreis 1 und 2 addiert. Standard: 3.000 Meter.",
-            "fr": "S'ajoute aux rayons 1 et 2. Par défaut : 3 000 mètres.",
-            "ko": "검색 반경 1과 2에 추가됩니다. 기본값: 3,000미터.",
-            "kl": "Ujaasiffik 1 aamma 2-mut ilassutaavoq. Nalinginnaasoq: 3.000 meter."
-          },
-          "required": true,
-          "default": 3000,
-          "min": 0,
-          "max": 10000
-        },
-
-        {
-          "key": "days_ahead",
-          "type": "select",
-          "label": {
-            "en": "Departures ahead",
-            "es": "Salidas futuras",
-            "de": "Abfahrten im Voraus",
-            "fr": "Départs à l’avance",
-            "ko": "미래 출발 정보",
-            "kl": "Siunissami aallarnissamut"
-          },
-          "description": {
-            "en": "Show departures starting at the current time, shifted by 0 to 7 days.",
-            "es": "Mostrar salidas a partir de la hora actual, desplazada de 0 a 7 días.",
-            "de": "Abfahrten ab der aktuellen Uhrzeit anzeigen, um 0 bis 7 Tage verschoben.",
-            "fr": "Afficher les départs à partir de l’heure actuelle, décalée de 0 à 7 jours.",
-            "ko": "현재 시각에서 0~7일 뒤부터 출발 정보를 표시합니다.",
-            "kl": "Maanna piffissamit ullut 0-7 siumut aallartussat takutikkit."
-          },
-          "required": true,
-          "default": "0",
-          "options": [
-            {
-              "value": "0",
-              "label": {
-                "en": "+0 days (now)",
-                "es": "+0 días (ahora)",
-                "de": "+0 Tage (jetzt)",
-                "fr": "+0 jour (maintenant)",
-                "ko": "+0일 (현재)",
-                "kl": "+0 ullut (maanna)"
-              }
-            },
-            {
-              "value": "1",
-              "label": {
-                "en": "+1 day",
-                "es": "+1 día",
-                "de": "+1 Tag",
-                "fr": "+1 jour",
-                "ko": "+1일",
-                "kl": "+1 ullut"
-              }
-            },
-            {
-              "value": "2",
-              "label": {
-                "en": "+2 days",
-                "es": "+2 días",
-                "de": "+2 Tage",
-                "fr": "+2 jours",
-                "ko": "+2일",
-                "kl": "+2 ullut"
-              }
-            },
-            {
-              "value": "3",
-              "label": {
-                "en": "+3 days",
-                "es": "+3 días",
-                "de": "+3 Tage",
-                "fr": "+3 jours",
-                "ko": "+3일",
-                "kl": "+3 ullut"
-              }
-            },
-            {
-              "value": "4",
-              "label": {
-                "en": "+4 days",
-                "es": "+4 días",
-                "de": "+4 Tage",
-                "fr": "+4 jours",
-                "ko": "+4일",
-                "kl": "+4 ullut"
-              }
-            },
-            {
-              "value": "5",
-              "label": {
-                "en": "+5 days",
-                "es": "+5 días",
-                "de": "+5 Tage",
-                "fr": "+5 jours",
-                "ko": "+5일",
-                "kl": "+5 ullut"
-              }
-            },
-            {
-              "value": "6",
-              "label": {
-                "en": "+6 days",
-                "es": "+6 días",
-                "de": "+6 Tage",
-                "fr": "+6 jours",
-                "ko": "+6일",
-                "kl": "+6 ullut"
-              }
-            },
-            {
-              "value": "7",
-              "label": {
-                "en": "+7 days",
-                "es": "+7 días",
-                "de": "+7 Tage",
-                "fr": "+7 jours",
-                "ko": "+7일",
-                "kl": "+7 ullut"
-              }
-            }
-          ]
-        },
-
-        {
-          "key": "count",
-          "type": "select",
-          "label": {
-            "en": "Number of departures",
-            "es": "Número de salidas",
-            "de": "Anzahl der Abfahrten",
-            "fr": "Nombre de départs",
-            "ko": "출발 정보 수",
-            "kl": "Aallartussat qassit"
-          },
-          "required": true,
-          "default": "6",
-          "options": [
-            {
-              "value": "3",
-              "label": {
-                "en": "3",
-                "de": "3",
-                "fr": "3",
-                "ko": "3",
-                "kl": "3"
-              }
-            },
-            {
-              "value": "6",
-              "label": {
-                "en": "6",
-                "de": "6",
-                "fr": "6",
-                "ko": "6",
-                "kl": "6"
-              }
-            }
-          ]
-        },
-        {
-          "key": "refresh_minutes",
-          "type": "select",
-          "label": {
-            "en": "Refresh interval",
-            "es": "Intervalo de actualización",
-            "de": "Aktualisierungsintervall",
-            "fr": "Intervalle d'actualisation",
-            "ko": "새로고침 간격",
-            "kl": "Nutarteriffik"
-          },
-          "required": true,
-          "default": "30",
-          "options": [
-            {
-              "value": "10",
-              "label": {
-                "en": "10 minutes",
-                "es": "10 minutos",
-                "de": "10 Minuten",
-                "fr": "10 minutes",
-                "ko": "10분",
-                "kl": "Minutsit 10"
-              }
-            },
-            {
-              "value": "20",
-              "label": {
-                "en": "20 minutes",
-                "es": "20 minutos",
-                "de": "20 Minuten",
-                "fr": "20 minutes",
-                "ko": "20분",
-                "kl": "Minutsit 20"
-              }
-            },
-            {
-              "value": "30",
-              "label": {
-                "en": "30 minute",
-                "es": "30 minutos",
-                "de": "30 Minuten",
-                "fr": "30 minutes",
-                "ko": "30분",
-                "kl": "Minutsit 30"
-              }
-            },
-            {
-              "value": "40",
-              "label": {
-                "en": "40 minutes",
-                "es": "40 minutos",
-                "de": "40 Minuten",
-                "fr": "40 minutes",
-                "ko": "40분",
-                "kl": "Minutsit 40"
-              }
-            },
-            {
-              "value": "50",
-              "label": {
-                "en": "50 minutes",
-                "es": "50 minutos",
-                "de": "50 Minuten",
-                "fr": "50 minutes",
-                "ko": "50분",
-                "kl": "Minutsit 50"
-              }
-            },
-            {
-              "value": "60",
-              "label": {
-                "en": "60 minutes",
-                "es": "60 minutos",
-                "de": "60 Minuten",
-                "fr": "60 minutes",
-                "ko": "60분",
-                "kl": "Minutsit 60"
-              }
-            }
-          ]
-        },
-        {
-          "key": "contact",
-          "type": "string",
-          "label": {
-            "en": "Contact for Transitous (email or website)",
-            "es": "Datos de contacto de Transitous (correo electrónico o página web)",
-            "de": "Kontakt für Transitous (E-Mail oder Website)",
-            "fr": "Contact pour Transitous (e-mail ou site web)",
-            "ko": "Transitous 문의처 (이메일 또는 웹사이트)",
-            "kl": "Transitous-mut saaffiffik (e-mail imaluunniit nittartagaq)"
-          },
-          "placeholder": {
-            "en": "e.g. github.com",
-            "es": "Por ejemplo: github.com",
-            "de": "z. B. github.com",
-            "fr": "ex. github.com",
-            "ko": "예: github.com",
-            "kl": "ass. github.com"
-          },
-          "required": true
+          "max": 100
         }
+      ],
+      "outputs": [
+        {
+          "key": "played",
+          "type": "boolean",
+          "label": { "de": "Ton gesendet", "en": "Sound sent", "fr": "Son envoyé", "es": "Sonido enviado" }
+        },
+        {
+          "key": "file",
+          "type": "string",
+          "label": { "de": "Abgespielte Datei", "en": "File played", "fr": "Fichier joué", "es": "Archivo reproducido" }
+        }
+      ]
+    },
+    {
+      "key": "read_state",
+      "label": {
+        "de": "Zustand der Soundbar lesen",
+        "en": "Read the soundbar state",
+        "fr": "Lire l'état de la barre de son",
+        "es": "Leer el estado de la barra de sonido"
+      },
+      "description": {
+        "de": "Liest die Soundbar jetzt und übergibt Lautstärke, Mute, Eingang, Klangprofil und Codec an die folgenden Aktionen.",
+        "en": "Reads the soundbar now and hands volume, mute, input, sound profile and codec to the following actions.",
+        "fr": "Lit la barre maintenant et transmet volume, sourdine, entrée, profil sonore et codec aux actions suivantes.",
+        "es": "Lee la barra ahora y entrega volumen, silencio, entrada, perfil de sonido y códec a las acciones siguientes."
+      },
+      "timeout_seconds": 30,
+      "outputs": [
+        { "key": "volume", "type": "number", "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" } },
+        { "key": "muted", "type": "boolean", "label": { "de": "Stumm", "en": "Muted", "fr": "Sourdine", "es": "Silenciado" } },
+        { "key": "input", "type": "string", "label": { "de": "Eingang", "en": "Input", "fr": "Entrée", "es": "Entrada" } },
+        { "key": "preset", "type": "string", "label": { "de": "Klangprofil", "en": "Sound profile", "fr": "Profil sonore", "es": "Perfil de sonido" } },
+        { "key": "codec", "type": "string", "label": { "de": "Codec", "en": "Codec", "fr": "Codec", "es": "Códec" } }
+      ]
+    },
+    {
+      "key": "set_volume",
+      "label": {
+        "de": "Lautstärke der Soundbar setzen",
+        "en": "Set the soundbar volume",
+        "fr": "Régler le volume de la barre",
+        "es": "Ajustar el volumen de la barra"
+      },
+      "description": {
+        "de": "Setzt die Lautstärke der Soundbar auf einen festen Wert.",
+        "en": "Sets the soundbar volume to an absolute value.",
+        "fr": "Règle le volume de la barre à une valeur absolue.",
+        "es": "Fija el volumen de la barra en un valor absoluto."
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "volume",
+          "type": "number",
+          "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" },
+          "required": true,
+          "min": 0,
+          "max": 100
+        }
+      ],
+      "outputs": [
+        { "key": "volume", "type": "number", "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" } }
       ]
     }
   ]

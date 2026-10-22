@@ -1,16 +1,13 @@
 // -----------------------------------------------------------------------------
 // ESLint flat config (ESLint 9+).
 //
-// Goal for this template: catch real mistakes (undefined variables, unused
-// code, unreachable branches) without fighting Prettier over formatting.
-//   - `@eslint/js` recommended  -> the sensible built-in rule set;
-//   - `eslint-config-prettier`  -> turns OFF every stylistic rule so Prettier
-//                                  owns formatting and the two never conflict.
+// Goal: catch real mistakes (undefined variables, unused code, unreachable
+// branches) and nothing else. Formatting and indentation are the author's
+// business: Prettier is deliberately not used in this project.
 // -----------------------------------------------------------------------------
 
 import js from '@eslint/js';
 import globals from 'globals';
-import prettier from 'eslint-config-prettier';
 
 export default [
   {
@@ -31,6 +28,4 @@ export default [
       'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
-  // Prettier last: it only removes rules, so it must win.
-  prettier,
 ];

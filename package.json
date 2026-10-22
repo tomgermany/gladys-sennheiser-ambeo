@@ -1,29 +1,21 @@
 {
-  "name": "gladys-integration-template-js",
-  "version": "3.3.0",
+  "name": "gladys-sennheiser-ambeo",
+  "version": "1.0.0",
   "private": true,
-  "description": "Official starter template to build an external integration for Gladys Assistant with the JavaScript SDK.",
+  "description": "Gladys Assistant external integration for Sennheiser AMBEO soundbars (Max, Plus, Mini).",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "lint": "eslint .",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
     "test": "node --test"
   },
-  "engines": {
-    "node": ">=22"
-  },
-  "dependencies": {
-    "@gladysassistant/integration-sdk": "^0.15.0"
-  },
+  "engines": { "node": ">=22" },
+  "dependencies": { "@gladysassistant/integration-sdk": "^0.15.0" },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.12.0",
-    "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.13.0",
-    "prettier": "^3.9.9"
+    "globals": "^17.13.0"
   },
   "license": "Apache-2.0"
 }

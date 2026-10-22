@@ -1,79 +1,70 @@
-# Transitous Intégration des départs en transit pour Gladys
+# Sennheiser AMBEO Soundbar
 
-## Il vous faut :
+Pilote une barre de son AMBEO **Max, Plus ou Mini** sur votre réseau local (sans cloud).
+La Plus est le modèle de référence ; la Mini et la Max sont prises en charge de la même façon.
 
-Gladys Assistant > Version 5.2
-Intégration externe des départs en transit
-Accès Internet pour votre installation de Gladys Assistant
+## Mise en route
 
-Example:
+1. Trouvez l'adresse IP de la barre (app Smart Control ou routeur).
+2. Saisissez-la dans l'écran **Configuration** de l'intégration.
+3. Appuyez sur **Tester la connexion** : l'intégration interroge la barre et dit ce
+   qu'elle a répondu (modèle, firmware, nombre d'entrées, volume). En cas d'erreur,
+   l'adresse est fausse ou la barre n'est pas joignable sur son port 80.
+4. Lancez une recherche d'appareils : un appareil avec tous les réglages de votre modèle est créé.
 
-![Testergebnisse – Beispielansicht der Transitous-Integration](../images/test-1.png)
+## Fonctions de l'appareil
 
-Résultat : six vignettes affichent dans un premier temps, une seule fois, l'arrêt le plus proche dans chaque catégorie. À savoir : l'arrêt de bus le plus proche, le ferry le plus proche, l'arrêt de transport ferroviaire le plus proche.
-Ensuite, le prochain départ depuis cet arrêt s'affiche.
-Cela signifie que s'il n'y a qu'un seul arrêt dans votre périmètre de recherche, vous obtiendrez les six prochains départs.
-Si plusieurs arrêts sont trouvés, ceux-ci s’affichent avec un code couleur.
+Marche/arrêt, volume, sourdine, entrée, profil sonore, mode nuit, mode AMBEO, amélioration
+des voix, retour sonore, caisson de basses, luminosité LED/logo/écran, appairage Bluetooth,
+mode éco, codec audio et lecture en cours (lecture seule). Les Plus et Mini exposent en plus
+le volume central ; la Max expose le niveau AMBEO et les niveaux centre/latéral/haut.
 
+La marche/arrêt dépend du modèle : la Max peut être réveillée et mise en veille, le bouton
+du widget est masqué sur les autres modèles.
 
-## Vous obtenez :
+Un modèle qui ne répond pas à tout un groupe de réglages (certaines versions de firmware)
+apparaît quand même : ce qu'il ne répond pas est journalisé et ignoré.
 
-Vous recevrez une intégration externe pour Galdys Assistant. 
-Cette intégration affiche automatiquement les 6 prochains départs
-des transports en commun dans un widget clair et facile à lire,
-qu’il s’agisse de bus, de trains, de ferries ou de tramways.
-Le tout dans un rayon configurable autour de votre domicile.
+## Widget « Télécommande barre de son »
 
-## Configuration
+Marche/arrêt, volume −/+ (pas configurable), sourdine et un bouton par entrée sélectionnable.
 
-1. Installez l'intégration externe soit via Gladys Assistant (recommandé),
- soit dans Gladys Assistant avec un accès direct à GitHub.
-3. Une fois l'installation terminée, vérifiez que l'intégration fonctionne correctement.
-4. Ouvrez votre tableau de bord, passez en mode Édition, puis ajoutez-y le nouveau widget.
-   Sélectionnez ce widget d'intégration.
-5. Lorsque vous ajoutez le widget à votre tableau de bord, vous devrez fournir certaines informations :
-a.) Votre géolocalisation comme point de départ
- (la prochaine phase de développement vous permettra d’importer des données depuis Gladys Assistant)
-b.) Le diamètre du rayon de recherche.
-c.) L’intervalle de rafraîchissement, par tranches de 10 minutes.
-d.) Un identifiant unique pour accéder à l’API sur https://transitous.org/.
-Cet identifiant doit être unique — par exemple, une adresse e-mail ou un site web.
-Il est enregistré par l'intégration uniquement dans le champ de configuration prévu à cet effet.
-L'intégration ne récupère ni ne consigne cet identifiant.
-Tout reste entre vos mains. Transitous.org utilise cet identifiant pour gérer la charge sur son infrastructure informatique.
-Tenez compte du fournisseur de données lorsque vous définissez ce paramètre. Nous recommandons une durée de 15 minutes.
-6. Après avoir renseigné ces informations, enregistrez-les et placez le widget à l'endroit de votre choix.
+## Scènes
 
-Plus précisément : sélectionnez soit votre domicile Galdys, soit saisissez une géolocalisation de votre choix.
-En dessous, vous définissez trois rayons de recherche en mètres. Cela signifie que les arrêts seront recherchés dans ces rayons.
-Les rayons des différents cercles sont additionnés. Si le rayon du cercle 1 est de 300 mètres et que vous entrez 200 mètres pour le cercle 2, alors
-le cercle 2 aura un rayon de recherche de 500 mètres:
+**Action « Jouer un son sur la barre de son »** joue un MP3 ou WAV :
 
-![Testergebnisse – Beispielansicht der Transitous-Integration](../images/test-2.png)
+- **Fichier du dossier « sounds »** : l'intégration sert le fichier elle-même et la barre
+  le récupère. Le dossier vit dans le volume de données de l'intégration, et le son par
+  défaut est nommé dans la configuration (laissez le champ de la scène vide pour l'utiliser).
+  Un son d'exemple de trois secondes (`tone.wav`) est livré et installé au premier démarrage.
+- **URL http(s)** : un lien direct vers le fichier, joignable par la barre.
 
-Dans la partie inférieure, vous pouvez ensuite choisir de reprogrammer l'affichage de l'heure. L'heure actuellement affichée correspond à l'heure à laquelle Gladys Assistant démarre aujourd'hui. À l'aide du menu déroulant, vous pouvez reprogrammer l'affichage en indiquant le nombre de jours souhaité ; par exemple, 14 h plus 1 jour = demain à 14 h. L'heure est toujours calculée par rapport au moment où l'application démarre. 
+Le champ **volume** optionnel règle le volume avant la lecture.
 
-Ils règlent ensuite la fréquence à laquelle les nouveaux horaires de départ seront récupérés. Par respect pour le prestataire Transitous, nous vous demandons de ne pas choisir une fréquence inférieure à 30 minutes.
+**Action « Lire l'état de la barre de son »** renvoie volume, sourdine, entrée, profil
+sonore et codec, lisibles par les étapes suivantes via `{{outputs.<clé>}}`.
 
-Enfin, Transitous demande un « connaisseur » ; nous ne conservons pas cette information (sauf dans le champ de configuration) et ne l'utilisons pas. Elle est utilisée exclusivement par Transitous :
+**Action « Régler le volume de la barre »** règle un volume absolu.
 
-![Testergebnisse – Beispielansicht der Transitous-Integration](../images/test-3.png)
+**Déclencheur « Le volume franchit une limite »** se déclenche quand le volume passe
+au-dessus de la limite « trop fort » ou en dessous de la limite « trop faible » de la
+configuration. Il porte le sens, la limite et le nouveau volume. Il se déclenche une fois
+par franchissement : pour une simple condition « volume au-dessus de X », utilisez le
+déclencheur « l'état d'un appareil change » de Gladys sur la fonction volume.
 
-## Mode d'emploi
+## Remarques
 
-Sur l'image du haut, vous verrez un bouton. Celui-ci affiche les trois zones de recherche que vous avez sélectionnées, et chaque clic vous permet de passer de la zone supérieure à la zone inférieure, puis inversement.
+L'API de la barre n'est pas documentée officiellement ; les chemins suivent la bibliothèque
+open source pyambeo. La lecture d'un fichier n'est pas encore vérifiée sur un appareil.
 
-Les résultats s'affichent dans un premier temps dans les six premières vignettes. Celles-ci indiquent : une icône représentant le mode de transport (bus, train, avion, ferry, etc.) ; en dessous, l'heure de départ et la gare de destination.
+## Mention légale
 
-Chaque mode de transport est représenté par une couleur distincte. Les services de transport spéciaux, tels que les ferries, les téléphériques, ainsi que les services « Call-a-Taxi » et « Moonliner », sont indiqués en gris. Les trajets annulés ou perturbés sont indiqués en rouge.
+Ce projet est **indépendant et non officiel**. Il **n'est ni affilié, ni autorisé, ni
+approuvé, ni sponsorisé par Sennheiser electronic SE & Co. KG** ni par aucune de ses
+filiales : ce n'est pas un produit ni un service officiel de Sennheiser.
 
-Au bas de l'écran, vous verrez s'afficher la liste des arrêts détectés. Celle-ci indique dans un premier temps le nom de l'arrêt, suivi du numéro de ligne (également identifié par un code couleur), de la distance par rapport à votre position actuelle et, le cas échéant, du type de véhicule.
-
-Sur l'image du haut, vous verrez un bouton. Celui-ci affiche les trois zones de recherche que vous avez sélectionnées, et chaque clic vous permet de passer de la zone supérieure à la zone inférieure, puis inversement.
-
-
-## Dépannage
-
-L'intégration consigne toutes ses opérations : consultez les journaux d'intégration depuis l'
-interface utilisateur de Gladys (ou via la commande `docker logs` sur l'hôte) avec l'option `LOG_LEVEL=debug` pour obtenir tous les
-détails.
+**Sennheiser** et **AMBEO** sont des marques ou des marques déposées de
+[Sennheiser electronic SE & Co. KG](https://www.sennheiser.com/), utilisées ici uniquement
+pour décrire le matériel avec lequel cette intégration fonctionne. Toutes les autres
+marques, noms de produits et noms de sociétés appartiennent à leurs propriétaires
+respectifs.
