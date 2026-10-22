@@ -16,7 +16,7 @@
 // message the moment the connection opens — a scan, a command, a config read —
 // and a handler registered after that point would simply miss it.
 //
-// THE SDKS CONTRACT, IN ONE PARAGRAPH
+// THE SDK CONTRACT, IN ONE PARAGRAPH
 // Gladys never runs our code on its own. It sends us messages over the
 // connection: "scan for devices", "the user set this value", "poll now",
 // "the configuration changed", "a scene reached your action". We answer each
@@ -121,6 +121,14 @@ async function publishDevice() {
   logger.info(
     `publishDiscoveredDevices -> "${device.name}" with ${device.features.length} features`,
   );
+  // Full list of what we send, as a diagnostic: a device that Gladys accepts
+  // but does not display can then be compared line by line with what came out.
+  for (const feature of device.features) {
+    logger.info(
+      `  feature: ${feature.name} | ${feature.category}/${feature.type} | ` +
+        `read_only=${feature.read_only} keep_history=${feature.keep_history}`,
+    );
+  }
   await gladys.publishDiscoveredDevices([device]);
   await publishAll(gladys, client, state);
 }
@@ -138,7 +146,7 @@ async function refresh() {
  * The "too loud / too quiet" scene trigger.
  *
  * Why this lives here and not in the scene: a scene trigger declared by an
- * integration can only match EQUALITY on its fields — no operator, no 
+ * integration can only match EQUALITY on its fields — no operator, no
  * threshold. So the comparison has to happen in the integration, and the scene
  * is only told that a crossing happened.
  *
