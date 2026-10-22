@@ -97,16 +97,69 @@
       "max": 100
     }
   ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "label": { "en": "Test the connection", "fr": "Tester la connexion" },
+      "description": {
+        "en": "Reads the soundbar now and says what it answered. Use it when the device scan ended without a device.",
+        "fr": "Interroge la barre maintenant et dit ce qu'elle a répondu. À utiliser quand la recherche d'appareils s'est terminée sans appareil."
+      },
+      "timeout_seconds": 30
+    }
+  ],
   "widgets": [
     {
       "key": "remote",
       "label": { "en": "Soundbar remote", "fr": "Télécommande barre de son" },
       "description": {
-        "en": "Power, volume and input selection of the soundbar.",
-        "fr": "Marche/arrêt, volume et choix de l'entrée de la barre de son."
+        "en": "Volume, mute and input cycling, plus the live volume of one soundbar.",
+        "fr": "Volume, sourdine et défilement des entrées, plus le volume en direct d'une barre."
       },
       "icon": "speaker",
-      "action_timeout_seconds": 15
+      "action_timeout_seconds": 15,
+      "settings": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": { "en": "Soundbar", "fr": "Barre de son" },
+          "description": {
+            "en": "Which soundbar this tile drives. Leave empty for the first one.",
+            "fr": "Quelle barre cette tuile pilote. Vide = la première."
+          },
+          "required": false
+        },
+        {
+          "key": "inputs",
+          "type": "multi_select",
+          "label": { "en": "Inputs to cycle", "fr": "Entrées à parcourir" },
+          "description": {
+            "en": "The inputs the Source button walks through, in the order given. Empty means all of them.",
+            "fr": "Les entrées parcourues par le bouton Source, dans l'ordre indiqué. Vide = toutes."
+          },
+          "required": false,
+          "options": [
+            { "value": "1", "label": "HDMI 1" },
+            { "value": "2", "label": "HDMI 2" },
+            { "value": "3", "label": "HDMI 3" },
+            { "value": "4", "label": "HDMI TV" },
+            { "value": "optical", "label": "Optical" },
+            { "value": "5", "label": "Bluetooth" }
+          ]
+        },
+        {
+          "key": "show_volume_buttons",
+          "type": "boolean",
+          "label": { "en": "Show volume buttons", "fr": "Afficher les boutons de volume" },
+          "description": {
+            "en": "Hide them to give the fourth button to something else later.",
+            "fr": "Les masquer pour libérer le quatrième bouton."
+          },
+          "required": false,
+          "default": true
+        }
+      ]
     }
   ],
   "scene_triggers": [
@@ -123,8 +176,8 @@
           "type": "select",
           "label": { "en": "Direction", "fr": "Sens" },
           "options": [
-            { "value": "over", "label": { "en": "Too loud", "fr": "Trop fort" } },
-            { "value": "under", "label": { "en": "Too quiet", "fr": "Trop faible" } }
+            { "value": "over", "label": "Too loud" },
+            { "value": "under", "label": "Too quiet" }
           ]
         }
       ],
@@ -152,11 +205,8 @@
           "required": true,
           "default": "data",
           "options": [
-            {
-              "value": "data",
-              "label": { "en": "File of the 'sounds' folder", "fr": "Fichier du dossier « sounds »" }
-            },
-            { "value": "url", "label": { "en": "http(s) URL", "fr": "URL http(s)" } }
+            { "value": "data", "label": "File of the sounds folder" },
+            { "value": "url", "label": "http(s) URL" }
           ]
         },
         {
@@ -164,8 +214,8 @@
           "type": "string",
           "label": { "en": "File name", "fr": "Nom du fichier" },
           "description": {
-            "en": "Name of the file in the integration's 'sounds' folder, e.g. tone.wav or alarm.mp3. Empty uses the default sound of the configuration.",
-            "fr": "Nom du fichier dans le dossier « sounds », ex. tone.wav ou alarme.mp3. Vide = son par défaut de la configuration."
+            "en": "Name of the file in the integration's 'sounds' folder, e.g. tone.wav. Empty uses the default sound of the configuration.",
+            "fr": "Nom du fichier dans le dossier « sounds », ex. tone.wav. Vide = son par défaut de la configuration."
           },
           "placeholder": { "en": "tone.wav", "fr": "tone.wav" }
         },

@@ -245,17 +245,17 @@ for (const [key, handler] of Object.entries(SCENE_ACTIONS)) {
 // onWidgetGet builds the content the dashboard renders; onWidgetAction runs a
 // tap on one of its buttons. The content is declarative — labels, rows and
 // buttons — and carries its own fixed parameters, never user input.
-gladys.onWidgetGet(REMOTE_WIDGET, async () => {
+gladys.onWidgetGet(REMOTE_WIDGET, async ({ settings }) => {
   // Read the soundbar first so the widget shows the truth, but keep the last
   // known state if that read fails: a stale value beats an empty widget.
   if (client) state = await client.fetchState().catch(() => state);
   const volumeFeatureId = client
     ? gladys.externalIds('soundbar', client.info.serial || client.host).feature('volume')
     : null;
-  return buildRemoteContent({ client, state, volumeFeatureId });
+  return buildRemoteContent({ client, state, volumeFeatureId, settings });
 });
-gladys.onWidgetAction(REMOTE_WIDGET, async (actionKey, params) => {
-  const toast = await runRemoteAction({ client, state, actionKey, params, config });
+gladys.onWidgetAction(REMOTE_WIDGET, async (actionKey, params, { settings }) => {
+  const toast = await runRemoteAction({ client, state, actionKey, params, settings, config });
   await refresh().catch(() => {});
   return toast;
 });
