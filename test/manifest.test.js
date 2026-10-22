@@ -98,18 +98,34 @@ test('section fields are purely presentational', () => {
   }
 });
 
-test('every select field offers at least one option', () => {
+
+test('every select field offers at least one option or a dynamic source', () => {
   for (const field of allFields.filter((field) => field.type === 'select')) {
+    if (field.source) {
+      assert.ok(
+        typeof field.source === 'string' && field.source.length > 0,
+        `select field "${field.key}" needs a valid source`,
+      );
+      continue;
+    }
+
     assert.ok(
       Array.isArray(field.options) && field.options.length > 0,
       `select field "${field.key}" needs options`,
     );
+
     for (const option of field.options) {
-      assert.ok(typeof option.value === 'string' || typeof option.value === 'number');
-      assert.ok(option.label?.en, `option "${option.value}" needs an English label`);
+      assert.ok(
+        typeof option.value === 'string' || typeof option.value === 'number',
+      );
+      assert.ok(
+        option.label?.en,
+        `option "${option.value}" needs an English label`,
+      );
     }
   }
 });
+
 
 test('the manifest and the package agree on the version', () => {
   assert.equal(manifest.version, pkg.version, 'manifest version must match package.json');
