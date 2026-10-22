@@ -1,81 +1,115 @@
-
+# -----------------------------------------------------------------------------
+# Cut a new release — entirely from the GitHub UI, no local tooling needed.
+#
+# In GitHub: Actions -> Release -> "Run workflow" -> pick patch / minor / major.
+#
+# What it does, in one run:
+#   1. computes the next semver from `package.json` (npm version rules);
+#   2. writes it into `package.json`, `package-lock.json` AND the manifest
+#      (`gladys-assistant-integration.json`: both `version` and the
+#      `docker_image` tag, so the indexer and the image stay in lockstep —
+#      with the sub-containers that run that same image);
+#   3. moves the `## [Unreleased]` section of `CHANGELOG.md` under the version;
+#   4. commits the bump and pushes the `vX.Y.Z` tag;
+#   5. calls build.yml to publish the multi-arch image (`:X.Y.Z` + `:latest`);
+#   6. calls github-release.yml to publish the GitHub Release of the tag.
+#
+# Why call build.yml and github-release.yml instead of relying on the tag push:
+# a tag pushed with the default GITHUB_TOKEN does NOT trigger other workflows,
+# so we invoke them ourselves. No personal access token to create.
+# -----------------------------------------------------------------------------
 name: Release
-
-# The one button to press to publish a version.
-#
-# What it does, in this order:
-#   1. bump the version in package.json and in the manifest — both `version` and
-#      the tag inside `docker_image` — so the three always agree;
-#   2. move the `## [Unreleased]` section of CHANGELOG.md under the new version;
-#   3. commit that, create the `vX.Y.Z` tag and push it;
-#   4. call Build, which produces the multi-arch image on ghcr.io;
-#   5. publish the GitHub Release of the tag, using the changelog section as its
-#      notes — the Gladys supervision page links every version to it.
-#
-# WHY THE VERSION IS BUMPED IN THREE PLACES AND NEVER BY HAND
-# The indexer serves whatever the manifest says, and Gladys pulls whatever tag
-# the manifest names. A half-bumped version is not an error anyone sees: it is
-# simply the old version still being offered to every user. One workflow writing
-# all three removes that whole class of mistake.
 
 on:
   workflow_dispatch:
     inputs:
-      bump:
-        description: Which part of the version to increase
+      release-type:
+        description: 'Version bump for this release'
         required: true
         type: choice
-        options: [patch, minor, major]
-
-permissions:
-  contents: write
-  packages: write
+        default: patch
+        options:
+          - patch
+          - minor
+          - major
 
 jobs:
-  release:
-    outputs:
-      version: ${{ steps.release.outputs.version }}
+  prepare:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # commit the version bump and push the tag
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v7
         with:
-          # The full history, so the changelog and the tags are all there.
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
         with:
           node-version: 24
 
-      - name: Configure git
+      - name: Bump version, update the manifest and the changelog
+        id: bump
+        env:
+          RELEASE_TYPE: ${{ inputs.release-type }}
         run: |
-          git config user.name "github-actions[bot]"
+          set -euo pipefail
+
+          # npm computes the next semver and writes it to package.json (and
+          # package-lock.json). --no-git-tag-version: we own the commit + tag
+          # below, so npm must not touch git.
+          new_version="$(npm version "$RELEASE_TYPE" --no-git-tag-version | tail -n1)"
+          new_version="${new_version#v}" # v1.2.0 -> 1.2.0
+
+          image="ghcr.io/${GITHUB_REPOSITORY,,}:${new_version}"
+
+          # Keep the manifest in lockstep: the version the indexer reads AND the
+          # image tag Gladys pulls must both point at this release. The script
+          # rewrites those two values in place (re-printing the file with jq
+          # would break the Prettier layout, and the CI format check with it),
+          # and moves the [Unreleased] changes of CHANGELOG.md under the version.
+          node .github/scripts/release.mjs prepare "$new_version" "$image" \
+            "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+
+          echo "version=${new_version}" >> "$GITHUB_OUTPUT"
+
+      # Note: if the branch you release from is protected against direct pushes,
+      # GitHub rejects the push below (the default GITHUB_TOKEN cannot bypass
+      # branch protection). Allow GitHub Actions to bypass the rule, or release
+      # from an unprotected branch.
+      - name: Commit, tag and push
+        env:
+          VERSION: ${{ steps.bump.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Bump the version and the changelog
-        id: release
-        run: node .github/scripts/release.mjs ${{ inputs.bump }}
+          git add package.json package-lock.json gladys-assistant-integration.json
+          if [ -f CHANGELOG.md ]; then git add CHANGELOG.md; fi
+          git commit -m "chore(release): ${VERSION}"
+          git tag -a "v${VERSION}" -m "Release ${VERSION}"
 
-      - name: Commit, tag and push
-        run: |
-          git add package.json gladys-assistant-integration.json CHANGELOG.md
-          git commit -m "chore(release): v${{ steps.release.outputs.version }}"
-          git tag "v${{ steps.release.outputs.version }}"
-          git push
-          git push --tags
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git push origin "v${VERSION}"
 
-      - name: Publish release notes
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create "v${{ steps.release.outputs.version }}" \
-            --title "v${{ steps.release.outputs.version }}" \
-            --notes-file "${{ steps.release.outputs.notes_file }}"
-
+  # Build and publish the image for the version we just tagged.
   build:
-    needs: release
+    needs: prepare
     uses: ./.github/workflows/build.yml
-    with:
-      version: ${{ needs.release.outputs.version }}
     permissions:
       contents: read
       packages: write
+    with:
+      version: ${{ needs.prepare.outputs.version }}
+
+  # Publish the GitHub Release of the new tag, once its image exists: the
+  # Gladys Supervision page links each version to the repository's releases.
+  github-release:
+    needs: build
+    uses: ./.github/workflows/github-release.yml
+    permissions:
+      contents: write
