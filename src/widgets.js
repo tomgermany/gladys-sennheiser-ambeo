@@ -13,14 +13,15 @@
 // value tiles, 2 texts and 1 status list. Anything beyond a cap is DROPPED, in
 // content order, silently. So the order below is a decision, not a detail: the
 // everyday controls come first, and a fifth button would simply never appear.
-// That is why the remote shows four buttons and the inputs are CYCLED rather
-// than listed, each one a button.
+// That is why the remote shows four buttons and the input is CYCLED rather
+// than listed, one button per input.
 //
-// HOW THE CYCLE WORKS
-// The user picks the inputs to walk through in the widget settings (per
-// instance, see the manifest). The Source button carries the next input in its
-// `params`, and the handler switches to it. The widget content is rebuilt on
-// every request, so the button always carries a fresh value.
+// WHY THE INPUT LIST COMES FROM THE DEVICE, NOT FROM THE SETTINGS
+// Which inputs exist depends on the model and on what the user set up in the
+// app: Spotify Connect, Tidal, AirPlay, or a renamed HDMI are all possible.
+// A fixed list in the manifest cannot know them, so the cycling button walks
+// the list the soundbar itself reports — the same list the Input feature in
+// the Devices tab offers. Rename an input in the app, and the button follows.
 //
 // SDK v0.14+/0.15, Gladys 5.1+.
 // -----------------------------------------------------------------------------
@@ -45,21 +46,17 @@ export const ACTION = {
 };
 
 /**
- * The inputs this widget walks through, in the order given by its settings.
+ * The inputs the Source button walks through.
  *
- * `settings.device` binds the widget to one soundbar; `settings.inputs` holds
- * the input ids the user ticked. Both are per-instance: two copies of the
- * widget on two dashboards can drive two different lists. Everything is
- * filtered against what the soundbar actually reports, so a stale id saved in
- * a dashboard cannot make the button send nonsense.
+ * Taken from the soundbar, in the order the device reports them: a model that
+ * also offers Spotify, Tidal or a renamed HDMI is covered without any change
+ * here. What the soundbar marks as not selectable (AirPlay, Google Cast, which
+ * only the casting app can switch to) is left out, because a button that
+ * always fails is worse than no button.
  */
-export function cycleSources(client, settings = {}) {
+export function cycleSources(client) {
   if (!client) return [];
-  const selectable = client.sources.filter((s) => s.selectable);
-  const chosen = Array.isArray(settings.inputs) ? settings.inputs.map(String) : [];
-  if (chosen.length === 0) return selectable;
-  const byId = new Map(selectable.map((s) => [String(s.id), s]));
-  return chosen.map((id) => byId.get(id)).filter(Boolean);
+  return client.sources.filter((s) => s.selectable);
 }
 
 /**
@@ -86,7 +83,7 @@ export function buildRemoteContent({ client, state, volumeFeatureId, settings = 
   }
 
   const on = client.isOn(state);
-  const inputs = cycleSources(client, settings);
+  const inputs = cycleSources(client);
   const current = String(state[KEY.SOURCE] ?? '');
   const components = [];
 
@@ -100,7 +97,8 @@ export function buildRemoteContent({ client, state, volumeFeatureId, settings = 
     });
   }
 
-  // 2. Where the sound comes from right now.
+  // 2. Where the sound comes from right now. Reads the same state as the
+  //    Devices tab, so the two never disagree.
   components.push({
     type: 'status',
     items: [
@@ -158,15 +156,19 @@ export function buildRemoteContent({ client, state, volumeFeatureId, settings = 
     action: { key: ACTION.MUTE },
   });
 
-  // 6. The Source button. With one input or none there is nothing to cycle, so
-  //    it is left out and the tile stays honest about what it can do.
+  // 6. The Source button: walks the inputs the SOUNDBAR reports, in its own
+  //    order, so a model with Spotify or a renamed HDMI needs no change here.
+  //    Left out when there is nothing to cycle through.
   if (inputs.length > 1) {
     const index = inputs.findIndex((s) => String(s.id) === current);
+    // `index` is -1 when the current input is one the device did not list as
+    // selectable (a cast target, or one that just changed). Starting at -1
+    // makes `+1` land on the first entry, which is the sane behaviour.
     const next = inputs[(index + 1 + inputs.length) % inputs.length];
     components.push({
       type: 'button',
-      // Shows where the button will go, which is more useful than the current
-      // input: that one is already in the status row above.
+      // Shows where the button will go; the current input is already in the
+      // status row above, so repeating it here would waste the space.
       label: { en: `Input: ${next.title}`, fr: `Entrée : ${next.title}` },
       icon: 'log-in',
       style: 'secondary',
@@ -211,9 +213,7 @@ export async function runRemoteAction({ client, state, actionKey, params, config
         .getValue('settings:/mediaPlayer/mute', 'bool_')
         .catch(() => Boolean(state?.[KEY.MUTED]));
       await client.set(KEY.MUTED, !muted);
-      return muted
-        ? { en: 'Sound on', fr: 'Son activé' }
-        : { en: 'Muted', fr: 'Son coupé' };
+      return muted ? { en: 'Sound on', fr: 'Son activé' } : { en: 'Muted', fr: 'Son coupé' };
     }
 
     case ACTION.SOURCE_NEXT: {

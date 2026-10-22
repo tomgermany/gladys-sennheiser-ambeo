@@ -93,7 +93,10 @@ async function connectSoundbar() {
     await next.connect();
     client = next;
     state = await client.fetchState();
-    logger.info(`Soundbar ready: ${client.info.model} (${client.info.serial ?? 'no serial'})`);
+    logger.info(
+      `Soundbar ready: ${client.info.model} (${client.info.serial ?? 'no serial'}), ` +
+        `${client.sources.filter((s) => s.selectable).length} selectable inputs`,
+    );
     await gladys.setConnectionStatus(true);
     return true;
   } catch (err) {
@@ -118,17 +121,13 @@ async function connectSoundbar() {
 async function publishDevice() {
   if (!client || !state) return;
   const device = buildDevice(gladys, client, state);
+  // The input list is printed once per connection: it is what both the device
+  // features and the widget's cycling button are built from, so seeing it is
+  // the quickest way to explain an input that does not appear where expected.
   logger.info(
-    `publishDiscoveredDevices -> "${device.name}" with ${device.features.length} features`,
+    `publishDiscoveredDevices -> "${device.name}" with ${device.features.length} features; ` +
+      `inputs: ${client.sources.filter((s) => s.selectable).map((s) => `${s.title}(${s.id})`).join(', ') || 'none'}`,
   );
-  // Full list of what we send, as a diagnostic: a device that Gladys accepts
-  // but does not display can then be compared line by line with what came out.
-  for (const feature of device.features) {
-    logger.info(
-      `  feature: ${feature.name} | ${feature.category}/${feature.type} | ` +
-        `read_only=${feature.read_only} keep_history=${feature.keep_history}`,
-    );
-  }
   await gladys.publishDiscoveredDevices([device]);
   await publishAll(gladys, client, state);
 }
