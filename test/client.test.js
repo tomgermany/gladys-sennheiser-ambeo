@@ -7,14 +7,17 @@ import { DEFAULT_CONFIG } from '../src/config.js';
 
 // Fake soundbar (Plus/Mini flavour): path -> getData answer.
 // Answers are served as TEXT, like the real client reads them.
-function fakeFetch(store, calls) {
+function fakeFetch(store, calls = []) {
   return async (url) => {
     const u = new URL(url);
     const fn = u.pathname.split('/').pop();
     const path = u.searchParams.get('path');
     calls.push({ fn, path, value: u.searchParams.get('value') });
     const body = (data) => ({ ok: true, text: async () => JSON.stringify(data) });
-    if (fn === 'getRows') return body({ rows: store.rows[path] ?? [] });
+    if (fn === 'getRows') {
+      if (!(path in store.rows)) return { ok: false, status: 404, text: async () => '' };
+      return body({ rows: store.rows[path] });
+    }
     if (fn === 'setData') return body({});
     if (!(path in store.data)) return { ok: false, status: 404, text: async () => '' };
     return body({ value: store.data[path] });
@@ -69,7 +72,7 @@ test('set: typed JSON value and activate path for inputs', async () => {
 });
 
 test('widget exposes power (Max only), volume and one button per input', async () => {
-  const c = new AmbeoClient('1.2.3.4', { fetch: fakeFetch(store, []) });
+  const c = new AmbeoClient('1.2.3.4', { fetch: fakeFetch(store) });
   await c.connect();
   const state = await c.fetchState();
   const content = buildRemoteContent({ client: c, state, volumeFeatureId: 'f' });
@@ -86,20 +89,34 @@ test('manifest defaults match config defaults', () => {
   }
 });
 
-test('a soundbar that answers the model but nothing else still connects', async () => {
-  // A firmware that only knows the model: every optional group is missing.
+// A firmware that knows nothing but its own model name must still produce a
+// usable client: the device appears, with no inputs and no profiles.
+test('a soundbar that answers the model only still connects', async () => {
   const partial = {
     data: { 'settings:/system/productName': { string_: 'AMBEO Soundbar Mini' } },
     rows: {},
   };
   const warns = [];
-  const c = new AmbeoClient('1.2.3.4', { fetch: fakeFetch(partial, []) });
+  const c = new AmbeoClient('1.2.3.4', { fetch: fakeFetch(partial) });
   c.warn = (what) => warns.push(what);
+
   const info = await c.connect();
   assert.equal(info.model, 'AMBEO Soundbar Mini');
   assert.equal(c.sources.filter((s) => s.selectable).length, 0);
   assert.deepEqual(c.presets, []);
-  assert.ok(warns.includes('sources'), 'the skipped group is reported');
+  // The groups themselves failed, so they are reported rather than silent.
+  assert.ok(warns.includes('sources'), `expected a report, got ${JSON.stringify(warns)}`);
+  assert.ok(warns.includes('presets'), `expected a report, got ${JSON.stringify(warns)}`);
+});
+
+// An unknown path answers 404 with an empty body on this firmware, and a wrong
+// address answers with a web page: both have to name what came back.
+test('an HTTP error names its path', async () => {
+  const partial = { data: {}, rows: {} };
+  const c = new AmbeoClient('1.2.3.4', { fetch: fakeFetch(partial) });
+  await assert.rejects(() => c.connect(), (err) =>
+    /HTTP 404 for settings:\/system\/productName/.test(err.message),
+  );
 });
 
 test('an HTML answer is reported with its path, not as a bare JSON error', async () => {
