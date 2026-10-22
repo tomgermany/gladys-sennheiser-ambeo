@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-22
+
 ### Added
 
 - The soundbar as one Gladys device: power, volume, mute, input, sound profile,
@@ -61,5 +63,6 @@ the notes of the version's GitHub Release.
 
 First release: Sennheiser AMBEO Soundbar Max, Plus and Mini.
 
-[Unreleased]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/tomgermany/gladys-sennheiser-ambeo/releases/tag/v1.0.0

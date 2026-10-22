@@ -1,6 +1,6 @@
 {
   "name": "gladys-sennheiser-ambeo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Gladys Assistant external integration for Sennheiser AMBEO soundbars (Max, Plus, Mini).",
   "type": "module",
@@ -10,8 +10,12 @@
     "lint": "eslint .",
     "test": "node --test"
   },
-  "engines": { "node": ">=22" },
-  "dependencies": { "@gladysassistant/integration-sdk": "^0.15.0" },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@gladysassistant/integration-sdk": "^0.15.0"
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.12.0",
