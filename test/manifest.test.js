@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Consistency checks between `gladys-assistant-integration.json`, the code and
+//  Consistency checks between `gladys-assistant-integration.json`, the code and
 // the tests. Keep the manifest and the integration in sync.
 // -----------------------------------------------------------------------------
 
