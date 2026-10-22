@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Build & publish the multi-architecture image.
+#  Build & publish the multi-architecture image.
 #
 # Triggers:
 #   - a Git version tag (e.g. `v1.2.0`) pushed by hand -> release build;
