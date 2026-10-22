@@ -71,15 +71,22 @@ test('set: typed JSON value and activate path for inputs', async () => {
   await assert.rejects(() => c.setSource('airplay'), /cannot be selected/);
 });
 
-test('widget exposes power (Max only), volume and one button per input', async () => {
+test('widget exposes power (Max only), volume and one source cycling button', async () => {
   const c = new AmbeoClient('1.2.3.4', { fetch: fakeFetch(store) });
   await c.connect();
   const state = await c.fetchState();
   const content = buildRemoteContent({ client: c, state, volumeFeatureId: 'f' });
-  const keys = content.components.filter((x) => x.type === 'button').map((x) => x.action.key);
-  assert.deepEqual(keys, ['volume_down', 'volume_up', 'mute_toggle', 'source', 'source']);
-});
+  const keys = content.components
+    .filter((x) => x.type === 'button')
+    .map((x) => x.action.key);
 
+  assert.deepEqual(keys, [
+    'volume_down',
+    'volume_up',
+    'mute_toggle',
+    'source_next',
+  ]);
+});
 test('manifest defaults match config defaults', () => {
   const m = JSON.parse(
     readFileSync(new URL('../gladys-assistant-integration.json', import.meta.url)),
