@@ -12,8 +12,12 @@
   "version": "1.1.1",
   "docker_image": "ghcr.io/tomgermany/gladys-sennheiser-ambeo:1.1.1",
   "gladys_version": ">=5.1.0",
-  "categories": ["music"],
-  "transports": ["local"],
+  "categories": [
+    "multimedia"
+  ],
+  "transports": [
+    "local"
+  ],
   "config_schema": [
     {
       "key": "host",
@@ -30,7 +34,12 @@
         "fr": "Adresse IP ou nom d'hôte de la barre de son (visible dans l'app Smart Control ou votre routeur).",
         "es": "Dirección IP o nombre de host de la barra (en la app Smart Control o en tu router)."
       },
-      "placeholder": { "de": "z. B. 192.168.1.50", "en": "e.g. 192.168.1.50", "fr": "ex. 192.168.1.50", "es": "p. ej. 192.168.1.50" },
+      "placeholder": {
+        "de": "z. B. 192.168.1.50",
+        "en": "e.g. 192.168.1.50",
+        "fr": "ex. 192.168.1.50",
+        "es": "p. ej. 192.168.1.50"
+      },
       "required": true
     },
     {
@@ -104,7 +113,12 @@
         "fr": "Nom du fichier joué quand une scène n'en nomme pas. Fichiers d'exemple : tone.wav, ou tone.mp3 dès que vous l'ajoutez au dossier.",
         "es": "Nombre del archivo que se reproduce cuando una escena no indica ninguno. Ejemplos: tone.wav, o tone.mp3 en cuanto lo añadas."
       },
-      "placeholder": { "de": "tone.wav", "en": "tone.wav", "fr": "tone.wav", "es": "tone.wav" },
+      "placeholder": {
+        "de": "tone.wav",
+        "en": "tone.wav",
+        "fr": "tone.wav",
+        "es": "tone.wav"
+      },
       "required": false,
       "default": "tone.wav"
     },
@@ -275,17 +289,32 @@
         {
           "key": "direction",
           "type": "string",
-          "label": { "de": "Richtung", "en": "Direction", "fr": "Sens", "es": "Dirección" }
+          "label": {
+            "de": "Richtung",
+            "en": "Direction",
+            "fr": "Sens",
+            "es": "Dirección"
+          }
         },
         {
           "key": "limit",
           "type": "number",
-          "label": { "de": "Grenze", "en": "Limit", "fr": "Limite", "es": "Límite" }
+          "label": {
+            "de": "Grenze",
+            "en": "Limit",
+            "fr": "Limite",
+            "es": "Límite"
+          }
         },
         {
           "key": "volume",
           "type": "number",
-          "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" }
+          "label": {
+            "de": "Lautstärke",
+            "en": "Volume",
+            "fr": "Volume",
+            "es": "Volumen"
+          }
         }
       ]
     }
@@ -354,7 +383,12 @@
             "fr": "Nom du fichier dans le dossier « sounds », ex. tone.wav. Vide = son par défaut de la configuration.",
             "es": "Nombre del archivo en la carpeta «sounds», p. ej. tone.wav. Vacío usa el sonido por defecto de la configuración."
           },
-          "placeholder": { "de": "tone.wav", "en": "tone.wav", "fr": "tone.wav", "es": "tone.wav" }
+          "placeholder": {
+            "de": "tone.wav",
+            "en": "tone.wav",
+            "fr": "tone.wav",
+            "es": "tone.wav"
+          }
         },
         {
           "key": "url",
@@ -401,12 +435,22 @@
         {
           "key": "played",
           "type": "boolean",
-          "label": { "de": "Ton gesendet", "en": "Sound sent", "fr": "Son envoyé", "es": "Sonido enviado" }
+          "label": {
+            "de": "Ton gesendet",
+            "en": "Sound sent",
+            "fr": "Son envoyé",
+            "es": "Sonido enviado"
+          }
         },
         {
           "key": "file",
           "type": "string",
-          "label": { "de": "Abgespielte Datei", "en": "File played", "fr": "Fichier joué", "es": "Archivo reproducido" }
+          "label": {
+            "de": "Abgespielte Datei",
+            "en": "File played",
+            "fr": "Fichier joué",
+            "es": "Archivo reproducido"
+          }
         }
       ]
     },
@@ -426,11 +470,56 @@
       },
       "timeout_seconds": 30,
       "outputs": [
-        { "key": "volume", "type": "number", "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" } },
-        { "key": "muted", "type": "boolean", "label": { "de": "Stumm", "en": "Muted", "fr": "Sourdine", "es": "Silenciado" } },
-        { "key": "input", "type": "string", "label": { "de": "Eingang", "en": "Input", "fr": "Entrée", "es": "Entrada" } },
-        { "key": "preset", "type": "string", "label": { "de": "Klangprofil", "en": "Sound profile", "fr": "Profil sonore", "es": "Perfil de sonido" } },
-        { "key": "codec", "type": "string", "label": { "de": "Codec", "en": "Codec", "fr": "Codec", "es": "Códec" } }
+        {
+          "key": "volume",
+          "type": "number",
+          "label": {
+            "de": "Lautstärke",
+            "en": "Volume",
+            "fr": "Volume",
+            "es": "Volumen"
+          }
+        },
+        {
+          "key": "muted",
+          "type": "boolean",
+          "label": {
+            "de": "Stumm",
+            "en": "Muted",
+            "fr": "Sourdine",
+            "es": "Silenciado"
+          }
+        },
+        {
+          "key": "input",
+          "type": "string",
+          "label": {
+            "de": "Eingang",
+            "en": "Input",
+            "fr": "Entrée",
+            "es": "Entrada"
+          }
+        },
+        {
+          "key": "preset",
+          "type": "string",
+          "label": {
+            "de": "Klangprofil",
+            "en": "Sound profile",
+            "fr": "Profil sonore",
+            "es": "Perfil de sonido"
+          }
+        },
+        {
+          "key": "codec",
+          "type": "string",
+          "label": {
+            "de": "Codec",
+            "en": "Codec",
+            "fr": "Codec",
+            "es": "Códec"
+          }
+        }
       ]
     },
     {
@@ -452,14 +541,28 @@
         {
           "key": "volume",
           "type": "number",
-          "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" },
+          "label": {
+            "de": "Lautstärke",
+            "en": "Volume",
+            "fr": "Volume",
+            "es": "Volumen"
+          },
           "required": true,
           "min": 0,
           "max": 100
         }
       ],
       "outputs": [
-        { "key": "volume", "type": "number", "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" } }
+        {
+          "key": "volume",
+          "type": "number",
+          "label": {
+            "de": "Lautstärke",
+            "en": "Volume",
+            "fr": "Volume",
+            "es": "Volumen"
+          }
+        }
       ]
     }
   ]
