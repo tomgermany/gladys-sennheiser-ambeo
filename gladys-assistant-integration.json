@@ -2,6 +2,7 @@
   "manifest_version": 1,
   "type": "device",
   "name": "Sennheiser AMBEO Soundbar",
+  "cover_image": "https://raw.githubusercontent.com/tomgermany/gladys-sennheiser-ambeo/main/cover.png",
   "description": {
     "de": "Steuert und überwacht Sennheiser AMBEO Soundbars Max, Plus und Mini im lokalen Netzwerk.",
     "en": "Control and monitor Sennheiser AMBEO Soundbar Max, Plus and Mini over your local network.",
