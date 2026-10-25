@@ -31,7 +31,7 @@ import { AmbeoClient } from './src/ambeo/client.js';
 import { normalizeConfig } from './src/config.js';
 import { buildDevice, deviceExternalId, onSetValue, publishAll } from './src/devices/soundbar.js';
 import { SCENE_ACTIONS, TRIGGER, evaluateVolume, nextSide } from './src/scenes.js';
-import { startSoundServer } from './src/sounds.js';
+import { seedSounds } from './src/sounds.js';
 import { REMOTE_WIDGET, buildRemoteContent, runRemoteAction } from './src/widgets.js';
 
 const gladys = new GladysIntegration();
@@ -50,13 +50,20 @@ const NO_HOST = {
   fr: "Indiquez l'adresse IP de la barre de son dans la configuration.",
 };
 
-// The sound folder is served by the integration itself, because the soundbar
-// has to be able to fetch a file by URL and cannot read our disk directly.
-// Started once, at the top: it is independent of the soundbar connection.
-const sounds = startSoundServer();
+// Audio files live in a volume shared with the Gladys-managed audio sub-container.
+// For this test, use the test NAS LAN IP; Gladys chooses and persists the host port.
+const TEST_AUDIO_HOST = '192.168.0.230';
+seedSounds();
 const servedBaseUrl = async () => {
-  if (!sounds.baseUrl) throw new Error('No LAN address found to serve the file from');
-  return sounds.baseUrl;
+  const containers = await gladys.getContainers();
+  const audio = containers.find((container) => container.name === 'ambeo-audio');
+  const port = audio?.ports?.find((item) => item.name === 'ambeo_audio')?.host_port;
+  if (!Number.isInteger(port) || port <= 0) {
+    throw new Error('Gladys has not assigned a host port to the ambeo-audio container yet');
+  }
+  const baseUrl = `http://${TEST_AUDIO_HOST}:${port}`;
+  logger.info(`Audio URL base: ${baseUrl} (port assigned by Gladys)`);
+  return baseUrl;
 };
 
 /** Read the current configuration from Gladys into `config`. */
@@ -287,7 +294,7 @@ gladys.on('connected', async () => {
 // so the port is released and the process exits cleanly.
 gladys.handleShutdown((signal) => {
   logger.info(`Received ${signal} -> graceful shutdown`);
-  sounds.server.close();
+  // The audio server is a separate sub-container managed by Gladys.
 });
 
 // --- Startup -----------------------------------------------------------------
