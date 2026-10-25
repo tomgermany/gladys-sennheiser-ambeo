@@ -8,7 +8,7 @@
 //   src/devices/soundbar.js  turning the soundbar state into Gladys features
 //   src/widgets.js           the dashboard remote
 //   src/scenes.js            the scene trigger and the scene actions
-//   src/sounds.js            the shared sound folder and its little web server
+//   src/sounds.js            the shared audio-file volume
 //   src/config.js            defaults and normalisation of the user settings
 //
 // THE ONE ORDERING RULE
@@ -298,7 +298,7 @@ gladys.handleShutdown((signal) => {
 });
 
 // --- Startup -----------------------------------------------------------------
-logger.info(`Starting the AMBEO soundbar integration... (sounds: ${sounds.dir})`);
+logger.info('Starting the AMBEO soundbar integration...');
 gladys.connect().catch((err) => {
   logger.error('Initial connection failed', err.message);
   process.exit(1);
