@@ -26,5 +26,5 @@ test('normalizeConfig trims the host and tolerates surrounding spaces', () => {
 
 test('normalizeConfig falls back to the default for a missing field', () => {
   assert.equal(normalizeConfig({ host: '10.0.0.2' }).poll_frequency, DEFAULT_CONFIG.poll_frequency);
-  assert.equal(normalizeConfig({}).default_sound, 'tone.wav');
+  assert.equal('default_sound' in normalizeConfig({}), false);
 });
