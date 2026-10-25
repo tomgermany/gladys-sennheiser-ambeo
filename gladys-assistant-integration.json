@@ -73,41 +73,6 @@
       "max": 20
     },
     {
-      "key": "sounds_intro",
-      "type": "section",
-      "label": {
-        "de": "Töne der Szenen",
-        "en": "Sounds of the scenes",
-        "fr": "Sons des scènes",
-        "es": "Sonidos de las escenas"
-      },
-      "description": {
-        "de": "Die Tondateien werden von der Integration selbst bereitgestellt: Öffnen Sie den Töne-Port der Integration, legen Sie dort Ihre MP3- oder WAV-Dateien ab und laden Sie diesen Bildschirm neu. Beim ersten Start wird ein Beispielton von drei Sekunden installiert.",
-        "en": "The sound files are served by the integration itself on its own port: open that port, drop your MP3 or WAV files there, then reload this screen. A three second sample tone is installed on first start.",
-        "fr": "Les fichiers sons sont servis par l'intégration elle-même sur son propre port : ouvrez ce port, déposez vos MP3 ou WAV, puis rechargez cet écran. Un son d'exemple de trois secondes est installé au premier démarrage.",
-        "es": "Los archivos de sonido los sirve la propia integración en su puerto: ábrelo, deja allí tus MP3 o WAV y recarga esta pantalla. En el primer arranque se instala un tono de ejemplo de tres segundos."
-      }
-    },
-    {
-      "key": "default_sound",
-      "type": "string",
-      "label": {
-        "de": "Standard-Tondatei",
-        "en": "Default sound file",
-        "fr": "Fichier son par défaut",
-        "es": "Archivo de sonido por defecto"
-      },
-      "description": {
-        "de": "Dateiname, der abgespielt wird, wenn eine Szene keinen nennt. Beispiel: tone.wav, oder tone.mp3 sobald Sie ihn ablegen.",
-        "en": "Name of the file played when a scene names none. Sample files: tone.wav, or tone.mp3 once you add it to the folder.",
-        "fr": "Nom du fichier joué quand une scène n'en nomme pas. Fichiers d'exemple : tone.wav, ou tone.mp3 dès que vous l'ajoutez au dossier.",
-        "es": "Nombre del archivo que se reproduce cuando una escena no indica ninguno. Ejemplos: tone.wav, o tone.mp3 en cuanto lo añadas."
-      },
-      "placeholder": { "de": "tone.wav", "en": "tone.wav", "fr": "tone.wav", "es": "tone.wav" },
-      "required": false,
-      "default": "tone.wav"
-    },
-    {
       "key": "volume_max",
       "type": "number",
       "label": {
