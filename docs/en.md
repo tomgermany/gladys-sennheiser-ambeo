@@ -32,17 +32,6 @@ input.
 
 ## Scenes
 
-**Action "Play a sound on the soundbar"** plays an MP3 or WAV:
-
-- **File of the "sounds" folder**: the integration serves the file itself and the
-  soundbar fetches it. The folder lives in the integration's own data volume, and
-  the default sound is named in the configuration (leave the scene field empty to
-  use it). A three second sample tone (`tone.wav`) ships with the integration and
-  is installed on first start.
-- **http(s) URL**: a direct link to the file, reachable by the soundbar.
-
-The optional **volume** field sets the volume before playing.
-
 **Action "Read the soundbar state"** returns volume, mute, input, sound profile and
 codec, readable by the following steps as `{{outputs.<key>}}`.
 
@@ -57,7 +46,7 @@ volume feature.
 ## Notes
 
 The soundbar API is not officially documented; the paths follow the open-source
-pyambeo library. Playback of a file is not verified against a device yet.
+pyambeo library.
 
 ## Legal notice
 
