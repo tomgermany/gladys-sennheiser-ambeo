@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.1.4] - 2026-10-25
+
 ## [1.1.3] - 2026-10-25
 
 ## [1.1.1] - 2026-10-23
@@ -67,7 +69,8 @@ the notes of the version's GitHub Release.
 
 First release: Sennheiser AMBEO Soundbar Max, Plus and Mini.
 
-[Unreleased]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.1.3...HEAD
+[Unreleased]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.1.4...HEAD
+[1.1.4]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.1.1...v1.1.3
 [1.1.1]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/tomgermany/gladys-sennheiser-ambeo/compare/v1.0.0...v1.1.0
