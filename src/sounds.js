@@ -29,7 +29,7 @@ const logger = createLogger({ name: 'sounds' });
 // Sample files shipped with the integration (see assets/sounds). A `select`
 // field of the manifest never offers an empty list, so the folder holds at
 // least one file: these are copied into it on first start.
-export const SAMPLE_FILES = [{ name: 'tone.wav' }, { name: 'tone.mp3' }];
+export const SAMPLE_FILES = [{ name: 'test.mp3' }, { name: 'tone.wav' }];
 
 const ALLOWED = new Set(['.mp3', '.wav', '.m4a', '.aac', '.ogg', '.flac']);
 const MIME = {
