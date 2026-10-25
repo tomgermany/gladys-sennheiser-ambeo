@@ -13,7 +13,10 @@
 // "device state changed" trigger on the volume feature — the device doc says so.
 // -----------------------------------------------------------------------------
 
+import { createLogger } from '@gladysassistant/integration-sdk';
 import { KEY } from './ambeo/client.js';
+
+const logger = createLogger({ name: 'scenes' });
 
 export const TRIGGER = {
   VOLUME_CROSSED: 'volume_threshold_crossed',
@@ -61,6 +64,35 @@ export function nextSide(events, previous) {
 
 /** One entry per declared scene action, registered in index.js. */
 export const SCENE_ACTIONS = {
+  /**
+   * Play a sound on the soundbar. Two sources:
+   *   - 'url'  : an http(s) URL the soundbar fetches itself;
+   *   - 'data' : a file of the integration's own "sounds" folder, served by the
+   *              integration on its own port (see src/sounds.js).
+   */
+  async play_sound({ client, fields, config, servedBaseUrl }) {
+    if (!client) throw new Error('Soundbar not connected');
+    const source = fields.source === 'url' ? 'url' : 'data';
+    let name = null;
+    let url;
+    if (source === 'url') {
+      url = String(fields.url ?? '');
+      if (!/^https?:\/\//i.test(url)) {
+        throw new Error('A http(s) URL is required');
+      }
+    } else {
+      name = String(fields.file || config.default_sound || '').replace(/^.*[/\\]/, '');
+      if (!name) throw new Error('No sound file chosen');
+      url = `${await servedBaseUrl()}/sounds/${encodeURIComponent(name)}`;
+    }
+    const volume = Number(fields.volume);
+    logger.info(`play_sound (${source}) -> ${url}`);
+    await client.playUrl(url, {
+      volume: Number.isFinite(volume) && volume > 0 ? volume : undefined,
+    });
+    return { played: true, file: name ?? url };
+  },
+
   /** Read the soundbar now and hand the values to the following actions. */
   async read_state({ client }) {
     if (!client) throw new Error('Soundbar not connected');

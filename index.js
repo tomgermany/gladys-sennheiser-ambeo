@@ -8,6 +8,7 @@
 //   src/devices/soundbar.js  turning the soundbar state into Gladys features
 //   src/widgets.js           the dashboard remote
 //   src/scenes.js            the scene trigger and the scene actions
+//   src/sounds.js            the shared sound folder and its little web server
 //   src/config.js            defaults and normalisation of the user settings
 //
 // THE ONE ORDERING RULE
@@ -30,6 +31,7 @@ import { AmbeoClient } from './src/ambeo/client.js';
 import { normalizeConfig } from './src/config.js';
 import { buildDevice, deviceExternalId, onSetValue, publishAll } from './src/devices/soundbar.js';
 import { SCENE_ACTIONS, TRIGGER, evaluateVolume, nextSide } from './src/scenes.js';
+import { startSoundServer } from './src/sounds.js';
 import { REMOTE_WIDGET, buildRemoteContent, runRemoteAction } from './src/widgets.js';
 
 const gladys = new GladysIntegration();
@@ -46,6 +48,15 @@ let volumeSide = 'normal'; // 'normal' | 'over' | 'under', see fireVolumeEvents(
 const NO_HOST = {
   en: 'Enter the soundbar IP address in the configuration.',
   fr: "Indiquez l'adresse IP de la barre de son dans la configuration.",
+};
+
+// The sound folder is served by the integration itself, because the soundbar
+// has to be able to fetch a file by URL and cannot read our disk directly.
+// Started once, at the top: it is independent of the soundbar connection.
+const sounds = startSoundServer();
+const servedBaseUrl = async () => {
+  if (!sounds.baseUrl) throw new Error('No LAN address found to serve the file from');
+  return sounds.baseUrl;
 };
 
 /** Read the current configuration from Gladys into `config`. */
@@ -226,7 +237,7 @@ gladys.onAction('test_connection', async () => {
 // One handler per action declared in the manifest `scene_actions`. Field values
 // arrive already resolved by Gladys (variables substituted, defaults applied).
 for (const [key, handler] of Object.entries(SCENE_ACTIONS)) {
-  gladys.onSceneAction(key, (fields) => handler({ client, fields, config }));
+  gladys.onSceneAction(key, (fields) => handler({ client, fields, config, servedBaseUrl }));
 }
 
 // --- Dashboard widget --------------------------------------------------------
@@ -272,13 +283,15 @@ gladys.on('connected', async () => {
 });
 
 // --- Shutdown ----------------------------------------------------------------
-// The container is stopped on every restart and update.
+// The container is stopped on every restart and update: close what we opened,
+// so the port is released and the process exits cleanly.
 gladys.handleShutdown((signal) => {
   logger.info(`Received ${signal} -> graceful shutdown`);
+  sounds.server.close();
 });
 
 // --- Startup -----------------------------------------------------------------
-logger.info('Starting the AMBEO soundbar integration...');
+logger.info(`Starting the AMBEO soundbar integration... (sounds: ${sounds.dir})`);
 gladys.connect().catch((err) => {
   logger.error('Initial connection failed', err.message);
   process.exit(1);
