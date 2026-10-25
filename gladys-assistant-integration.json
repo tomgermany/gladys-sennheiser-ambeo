@@ -12,6 +12,29 @@
   "version": "1.1.1",
   "docker_image": "ghcr.io/tomgermany/gladys-sennheiser-ambeo:test-sound",
   "gladys_version": ">=5.1.0",
+  "containers": [
+    {
+      "name": "ambeo-audio",
+      "docker_image": "ghcr.io/tomgermany/gladys-sennheiser-ambeo:test-sound",
+      "command": ["node", "src/audio-server.js"],
+      "start": "auto",
+      "volumes": ["/sounds"],
+      "ports": [
+        {
+          "container_port": 8080,
+          "protocol": "tcp",
+          "name": "ambeo_audio",
+          "browsable": false,
+          "label": {
+            "en": "AMBEO audio files",
+            "de": "AMBEO-Audiodateien"
+          }
+        }
+      ],
+      "memory_mb": 64,
+      "cpu": 0.1
+    }
+  ],
   "categories": [
     "multimedia"
   ],
