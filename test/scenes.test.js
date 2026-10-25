@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { evaluateVolume, nextSide, TRIGGER } from '../src/scenes.js';
+import { evaluateVolume, nextSide } from '../src/scenes.js';
 
 test('threshold fires once per crossing, holds while loud, re-arms after hysteresis', () => {
   let side = 'normal';
