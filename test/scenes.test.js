@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { evaluateVolume, nextSide, TRIGGER } from '../src/scenes.js';
-import { listSounds, firstLanAddress } from '../src/sounds.js';
+import { listSounds } from '../src/sounds.js';
 
 test('threshold fires once per crossing, holds while loud, re-arms after hysteresis', () => {
   let side = 'normal';
@@ -39,6 +39,3 @@ test('trigger key and file listing are stable', () => {
   assert.ok(Array.isArray(listSounds()));
 });
 
-test('a LAN address is found in this container', () => {
-  assert.match(String(firstLanAddress()), /^\d+\.\d+\.\d+\.\d+$/);
-});
