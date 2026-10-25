@@ -22,7 +22,7 @@ const server = createServer((req, res) => {
     res.writeHead(400).end('Bad request');
     return;
   }
-  if (pathname === '/sounds' || pathname === '/') {
+  if (pathname === '/sounds' || pathname === '/sounds/' || pathname === '/') {
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify(readdirSync(SOUNDS_DIR).filter((f) =>
       ALLOWED.has(f.slice(f.lastIndexOf('.')).toLowerCase()),
