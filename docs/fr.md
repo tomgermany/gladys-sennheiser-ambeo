@@ -31,16 +31,6 @@ Marche/arrêt, volume −/+ (pas configurable), sourdine et un bouton par entré
 
 ## Scènes
 
-**Action « Jouer un son sur la barre de son »** joue un MP3 ou WAV :
-
-- **Fichier du dossier « sounds »** : l'intégration sert le fichier elle-même et la barre
-  le récupère. Le dossier vit dans le volume de données de l'intégration, et le son par
-  défaut est nommé dans la configuration (laissez le champ de la scène vide pour l'utiliser).
-  Un son d'exemple de trois secondes (`tone.wav`) est livré et installé au premier démarrage.
-- **URL http(s)** : un lien direct vers le fichier, joignable par la barre.
-
-Le champ **volume** optionnel règle le volume avant la lecture.
-
 **Action « Lire l'état de la barre de son »** renvoie volume, sourdine, entrée, profil
 sonore et codec, lisibles par les étapes suivantes via `{{outputs.<clé>}}`.
 
@@ -55,7 +45,7 @@ déclencheur « l'état d'un appareil change » de Gladys sur la fonction volume
 ## Remarques
 
 L'API de la barre n'est pas documentée officiellement ; les chemins suivent la bibliothèque
-open source pyambeo. La lecture d'un fichier n'est pas encore vérifiée sur un appareil.
+open source pyambeo.
 
 ## Mention légale
 
