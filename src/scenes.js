@@ -13,10 +13,7 @@
 // "device state changed" trigger on the volume feature — the device doc says so.
 // -----------------------------------------------------------------------------
 
-import { createLogger } from '@gladysassistant/integration-sdk';
 import { KEY } from './ambeo/client.js';
-
-const logger = createLogger({ name: 'scenes' });
 
 export const TRIGGER = {
   VOLUME_CROSSED: 'volume_threshold_crossed',
