@@ -64,6 +64,15 @@ jobs:
           new_version="$(npm version "$RELEASE_TYPE" --no-git-tag-version | tail -n1)"
           new_version="${new_version#v}" # v1.2.0 -> 1.2.0
 
+          # A failed earlier release may have left its tag behind even though
+          # the version bump never reached main. Never overwrite or delete a
+          # published tag: advance by patch until we find an unused version.
+          while git rev-parse --verify --quiet "refs/tags/v${new_version}" >/dev/null; do
+            echo "::warning::Tag v${new_version} already exists; advancing to the next patch version."
+            new_version="$(npm version patch --no-git-tag-version | tail -n1)"
+            new_version="${new_version#v}"
+          done
+
           image="ghcr.io/${GITHUB_REPOSITORY,,}:${new_version}"
 
           # Keep the manifest in lockstep: the version the indexer reads AND the
