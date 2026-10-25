@@ -31,7 +31,6 @@ import { AmbeoClient } from './src/ambeo/client.js';
 import { normalizeConfig } from './src/config.js';
 import { buildDevice, deviceExternalId, onSetValue, publishAll } from './src/devices/soundbar.js';
 import { SCENE_ACTIONS, TRIGGER, evaluateVolume, nextSide } from './src/scenes.js';
-import { seedSounds } from './src/sounds.js';
 import { REMOTE_WIDGET, buildRemoteContent, runRemoteAction } from './src/widgets.js';
 
 const gladys = new GladysIntegration();
@@ -50,10 +49,12 @@ const NO_HOST = {
   fr: "Indiquez l'adresse IP de la barre de son dans la configuration.",
 };
 
-// Audio files live in a volume shared with the Gladys-managed audio sub-container.
+// The audio sub-container serves bundled samples directly and reads custom files
+// from its declared /sounds volume. The main container must not write into that
+// mount at startup: its availability/permissions must not prevent the integration
+// itself from starting.
 // For this test, use the test NAS LAN IP; Gladys chooses and persists the host port.
 const TEST_AUDIO_HOST = '192.168.0.230';
-seedSounds();
 const servedBaseUrl = async () => {
   const containers = await gladys.getContainers();
   const audio = containers.find((container) => container.name === 'ambeo-audio');
