@@ -5,6 +5,7 @@ COPY package.json package-lock.json* ./
 RUN npm ci --omit=dev || npm install --omit=dev
 COPY index.js ./
 COPY src ./src
+COPY assets ./assets
 COPY gladys-assistant-integration.json ./
 # Only writable location at runtime (read-only rootfs).
 ENV NODE_ENV=production
