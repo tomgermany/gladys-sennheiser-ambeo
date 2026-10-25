@@ -1,6 +1,6 @@
 {
   "name": "gladys-sennheiser-ambeo",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "description": "Gladys Assistant external integration for Sennheiser AMBEO soundbars (Max, Plus, Mini).",
   "type": "module",
