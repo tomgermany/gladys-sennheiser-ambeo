@@ -38,6 +38,17 @@ botones de volumen si prefieres dejar libre ese hueco.
 
 ## Escenas
 
+**Acción «Reproducir un sonido en la barra de sonido»** reproduce un MP3 o WAV:
+
+- **Archivo de la carpeta «sounds»**: la integración sirve el archivo ella misma y la
+  barra lo descarga. La carpeta vive en el volumen de datos de la integración y el
+  sonido por defecto se indica en la configuración (deja vacío el campo de la escena
+  para usarlo). Se incluye un tono de ejemplo de tres segundos (`tone.wav`) que se
+  instala en el primer arranque.
+- **URL http(s)**: un enlace directo al archivo, accesible desde la barra.
+
+El campo **volumen** opcional ajusta el volumen antes de reproducir.
+
 **Acción «Leer el estado de la barra de sonido»** devuelve volumen, silencio, entrada,
 perfil de sonido y códec, legibles por los pasos siguientes como `{{outputs.<clave>}}`.
 
@@ -52,7 +63,8 @@ Gladys sobre la función de volumen.
 ## Notas
 
 La API de la barra no está documentada oficialmente; las rutas siguen la biblioteca de
-código abierto pyambeo.
+código abierto pyambeo. La reproducción de un archivo aún no se ha verificado en un
+dispositivo.
 
 ## Aviso legal
 
