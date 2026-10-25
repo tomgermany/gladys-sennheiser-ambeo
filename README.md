@@ -45,20 +45,6 @@ that follows the device.
 
 ## Scenes
 
-### Action "Play a sound on the soundbar"
-
-Makes the soundbar play an MP3 or WAV. Two sources:
-
-- **File of the "sounds" folder** — the integration serves the file itself on its own
-  port and the soundbar fetches it. The folder is published through the integration's
-  **sounds** port: open it from the Apps screen, drop your MP3 or WAV files there, then
-  reload the configuration screen. A three second sample tone (`tone.wav`) is installed
-  on first start.
-- **http(s) URL** — a direct link to the file. The soundbar fetches it itself, so it must
-  be reachable from the soundbar and stay online while it plays.
-
-The optional **volume** field sets the volume before playing.
-
 ### Action "Read the soundbar state"
 
 Reads the soundbar now and returns volume, mute, input, sound profile and codec, which the
@@ -89,8 +75,7 @@ which also powers the Home Assistant integration for these soundbars. The Max ru
 different firmware family than the Plus and the Mini, so the two are handled by separate
 path sets, chosen at runtime from the model name the soundbar reports.
 
-The API is not officially documented or supported by Sennheiser. Playback of a file is
-the part that is verified least: test it with the URL source first.
+The API is not officially documented or supported by Sennheiser.
 
 ## Development
 
@@ -107,7 +92,6 @@ node index.js
 - `src/devices/soundbar.js` turns the state the soundbar returns into Gladys features.
 - `src/widgets.js` builds the dashboard content and runs its buttons.
 - `src/scenes.js` holds the scene trigger and the scene actions.
-- `src/sounds.js` serves the shared sound folder.
 
 ## Legal notice
 
