@@ -11,8 +11,12 @@
   "version": "1.1.4",
   "docker_image": "ghcr.io/tomgermany/gladys-sennheiser-ambeo:1.1.4",
   "gladys_version": ">=5.1.0",
-  "categories": ["music"],
-  "transports": ["local"],
+  "categories": [
+    "multimedia"
+  ],
+  "transports": [
+    "local"
+  ],
   "config_schema": [
     {
       "key": "host",
@@ -29,7 +33,12 @@
         "fr": "Adresse IP ou nom d'hôte de la barre de son (visible dans l'app Smart Control ou votre routeur).",
         "es": "Dirección IP o nombre de host de la barra (en la app Smart Control o en tu router)."
       },
-      "placeholder": { "de": "z. B. 192.168.1.50", "en": "e.g. 192.168.1.50", "fr": "ex. 192.168.1.50", "es": "p. ej. 192.168.1.50" },
+      "placeholder": {
+        "de": "z. B. 192.168.1.50",
+        "en": "e.g. 192.168.1.50",
+        "fr": "ex. 192.168.1.50",
+        "es": "p. ej. 192.168.1.50"
+      },
       "required": true
     },
     {
@@ -239,23 +248,37 @@
         {
           "key": "direction",
           "type": "string",
-          "label": { "de": "Richtung", "en": "Direction", "fr": "Sens", "es": "Dirección" }
+          "label": {
+            "de": "Richtung",
+            "en": "Direction",
+            "fr": "Sens",
+            "es": "Dirección"
+          }
         },
         {
           "key": "limit",
           "type": "number",
-          "label": { "de": "Grenze", "en": "Limit", "fr": "Limite", "es": "Límite" }
+          "label": {
+            "de": "Grenze",
+            "en": "Limit",
+            "fr": "Limite",
+            "es": "Límite"
+          }
         },
         {
           "key": "volume",
           "type": "number",
-          "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" }
+          "label": {
+            "de": "Lautstärke",
+            "en": "Volume",
+            "fr": "Volume",
+            "es": "Volumen"
+          }
         }
       ]
     }
   ],
   "scene_actions": [
-    
     {
       "key": "read_state",
       "label": {
@@ -272,11 +295,56 @@
       },
       "timeout_seconds": 30,
       "outputs": [
-        { "key": "volume", "type": "number", "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" } },
-        { "key": "muted", "type": "boolean", "label": { "de": "Stumm", "en": "Muted", "fr": "Sourdine", "es": "Silenciado" } },
-        { "key": "input", "type": "string", "label": { "de": "Eingang", "en": "Input", "fr": "Entrée", "es": "Entrada" } },
-        { "key": "preset", "type": "string", "label": { "de": "Klangprofil", "en": "Sound profile", "fr": "Profil sonore", "es": "Perfil de sonido" } },
-        { "key": "codec", "type": "string", "label": { "de": "Codec", "en": "Codec", "fr": "Codec", "es": "Códec" } }
+        {
+          "key": "volume",
+          "type": "number",
+          "label": {
+            "de": "Lautstärke",
+            "en": "Volume",
+            "fr": "Volume",
+            "es": "Volumen"
+          }
+        },
+        {
+          "key": "muted",
+          "type": "boolean",
+          "label": {
+            "de": "Stumm",
+            "en": "Muted",
+            "fr": "Sourdine",
+            "es": "Silenciado"
+          }
+        },
+        {
+          "key": "input",
+          "type": "string",
+          "label": {
+            "de": "Eingang",
+            "en": "Input",
+            "fr": "Entrée",
+            "es": "Entrada"
+          }
+        },
+        {
+          "key": "preset",
+          "type": "string",
+          "label": {
+            "de": "Klangprofil",
+            "en": "Sound profile",
+            "fr": "Profil sonore",
+            "es": "Perfil de sonido"
+          }
+        },
+        {
+          "key": "codec",
+          "type": "string",
+          "label": {
+            "de": "Codec",
+            "en": "Codec",
+            "fr": "Codec",
+            "es": "Códec"
+          }
+        }
       ]
     },
     {
@@ -298,15 +366,30 @@
         {
           "key": "volume",
           "type": "number",
-          "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" },
+          "label": {
+            "de": "Lautstärke",
+            "en": "Volume",
+            "fr": "Volume",
+            "es": "Volumen"
+          },
           "required": true,
           "min": 0,
           "max": 100
         }
       ],
       "outputs": [
-        { "key": "volume", "type": "number", "label": { "de": "Lautstärke", "en": "Volume", "fr": "Volume", "es": "Volumen" } }
+        {
+          "key": "volume",
+          "type": "number",
+          "label": {
+            "de": "Lautstärke",
+            "en": "Volume",
+            "fr": "Volume",
+            "es": "Volumen"
+          }
+        }
       ]
     }
-  ]
+  ],
+  "cover_image": "https://raw.githubusercontent.com/tomgermany/gladys-sennheiser-ambeo/main/cover.png"
 }
