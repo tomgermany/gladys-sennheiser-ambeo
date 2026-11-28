@@ -35,7 +35,11 @@ o desactivar el silencio y pasar a la siguiente entrada seleccionable. El botón
 entrada indica cuál será la siguiente. El paso del volumen se puede configurar y los
 botones de volumen se pueden ocultar en los ajustes del widget.
 
-En los ajustes del widget también puedes elegir qué barra controla esa tarjeta.
+En los ajustes del widget también puedes elegir qué barra controla esa tarjeta. Gladys
+muestra como máximo cuatro botones: en la Max, los botones de encendido, volumen −/+, y
+silencio ocupan los cuatro espacios, por lo que el botón para cambiar de entrada no se
+muestra mientras estén activados los botones de volumen. Si ocultas los botones de
+volumen, liberas espacio.
 
 ## Escenas
 
