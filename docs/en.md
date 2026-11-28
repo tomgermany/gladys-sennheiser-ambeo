@@ -27,8 +27,13 @@ still appears: what it does not answer is logged and skipped.
 
 ## Widget "Soundbar remote"
 
-Power on/off, volume down/up (step configurable), mute, and one button per selectable
-input.
+The widget shows the current volume and selected input in two value tiles. Its buttons
+let you turn the Max on/off, decrease volume (−), increase volume (+), toggle mute
+(Mute/Unmute), and switch to the next selectable input (Next: *input name*).
+The volume step can be configured, and the volume buttons can be hidden in the widget
+settings. Gladys displays at most four buttons: on the Max, the power, volume −/+, and
+mute buttons fill all four slots, so the next-input button is not shown while the volume
+buttons are enabled. Hiding the volume buttons frees a slot.
 
 ## Scenes
 

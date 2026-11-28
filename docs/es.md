@@ -29,12 +29,17 @@ aparece igualmente: lo que no responde se registra en el log y se ignora.
 
 ## Widget «Mando de la barra de sonido»
 
-Encendido/apagado, volumen −/+ (paso configurable), silencio y un botón que recorre las
-entradas que la propia barra comunica. La entrada activa aparece en la fila de estado, y
-el botón de entrada muestra a cuál va a cambiar.
+El widget muestra el volumen actual y la entrada seleccionada en dos tarjetas de valor.
+Sus botones permiten encender/apagar la Max, bajar el volumen (−), subirlo (+), activar
+o desactivar el silencio y pasar a la siguiente entrada seleccionable. El botón de
+entrada indica cuál será la siguiente. El paso del volumen se puede configurar y los
+botones de volumen se pueden ocultar en los ajustes del widget.
 
-En los ajustes del widget puedes elegir la barra que controla esa tarjeta y ocultar los
-botones de volumen si prefieres dejar libre ese hueco.
+En los ajustes del widget también puedes elegir qué barra controla esa tarjeta. Gladys
+muestra como máximo cuatro botones: en la Max, los botones de encendido, volumen −/+, y
+silencio ocupan los cuatro espacios, por lo que el botón para cambiar de entrada no se
+muestra mientras estén activados los botones de volumen. Si ocultas los botones de
+volumen, liberas espacio.
 
 ## Escenas
 

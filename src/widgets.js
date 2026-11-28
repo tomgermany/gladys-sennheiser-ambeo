@@ -23,7 +23,7 @@
 // the list the soundbar itself reports — the same list the Input feature in
 // the Devices tab offers. Rename an input in the app, and the button follows.
 //
-// SDK v0.14+/0.15, Gladys 5.1+.
+// SDK v0.16, Gladys 5.3+.
 // -----------------------------------------------------------------------------
 
 import { KEY } from './ambeo/client.js';
@@ -97,18 +97,16 @@ export function buildRemoteContent({ client, state, volumeFeatureId, settings = 
     });
   }
 
-  // 2. Where the sound comes from right now. Reads the same state as the
-  //    Devices tab, so the two never disagree.
+  // 2. The currently selected input, as a second value tile beside volume.
+  //    Value tiles accept at most 12 characters; shorten long source names so
+  //    the widget stays within the Gladys component vocabulary.
+  const inputTitle = client.sourceTitle(state) ?? '–';
   components.push({
-    type: 'status',
-    items: [
-      {
-        label: { en: 'Input', fr: 'Entrée' },
-        icon: 'log-in',
-        value: client.sourceTitle(state) ?? '–',
-        color: 'neutral',
-      },
-    ],
+    type: 'value',
+    label: { en: 'Input', fr: 'Entrée' },
+    icon: 'log-in',
+    value: inputTitle.length > 12 ? `${inputTitle.slice(0, 11)}…` : inputTitle,
+    color: 'neutral',
   });
 
   // 3. Power, only on a model that can be switched over its API. Skipped
@@ -129,14 +127,14 @@ export function buildRemoteContent({ client, state, volumeFeatureId, settings = 
     components.push(
       {
         type: 'button',
-        label: { en: 'Quieter', fr: 'Moins fort' },
+        label: { en: '−', fr: '−' },
         icon: 'volume-1',
         style: 'secondary',
         action: { key: ACTION.VOLUME_DOWN },
       },
       {
         type: 'button',
-        label: { en: 'Louder', fr: 'Plus fort' },
+        label: { en: '+', fr: '+' },
         icon: 'volume-2',
         style: 'secondary',
         action: { key: ACTION.VOLUME_UP },
@@ -167,9 +165,9 @@ export function buildRemoteContent({ client, state, volumeFeatureId, settings = 
     const next = inputs[(index + 1 + inputs.length) % inputs.length];
     components.push({
       type: 'button',
-      // Shows where the button will go; the current input is already in the
-      // status row above, so repeating it here would waste the space.
-      label: { en: `Input: ${next.title}`, fr: `Entrée : ${next.title}` },
+      // The input name alone keeps the button compact; the log-in icon
+      // already communicates that this button changes the selected input.
+      label: { en: next.title, fr: next.title },
       icon: 'log-in',
       style: 'secondary',
       action: { key: ACTION.SOURCE_NEXT, params: { next: String(next.id) } },

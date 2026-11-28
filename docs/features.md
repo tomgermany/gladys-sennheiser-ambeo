@@ -78,20 +78,22 @@ gar nicht, weil die Soundbar sie nicht beantwortet.
 
 ## Was das Widget zusätzlich kann
 
-Das Widget zeigt dieselben Werte, aber mit einer Auswahl an Knöpfen. Eine
-Dashboard-Kachel nimmt höchstens vier Knöpfe an, deshalb sind es genau vier:
+Das Widget zeigt die aktuelle Lautstärke und den ausgewählten Eingang als zwei
+Wertkacheln. Es bietet bis zu vier Schaltflächen:
 
-| Knopf | Wirkung |
+| Schaltfläche | Anzeige und Wirkung |
 | --- | --- |
-| Quieter | Eine Stufe leiser, Schrittweite aus der Konfiguration. |
-| Louder | Eine Stufe lauter. |
-| Mute / Unmute | Stummschaltung umschalten. |
-| Input: *Name* | Schaltet zum nächsten Eingang in der Liste, die die Soundbar meldet. |
+| − (mit Lautsprechersymbol) | Eine Stufe leiser; die Schrittweite wird in der Konfiguration festgelegt. |
+| + (mit Lautsprechersymbol) | Eine Stufe lauter. |
+| Mute / Unmute | Stummschaltung ein- bzw. ausschalten. |
+| Next: *Name* | Wechselt zum nächsten auswählbaren Eingang. Der Name zeigt das nächste Ziel an. |
 
-Dazu zwei Anzeigen: die Lautstärke als Live-Kachel und der aktuelle Eingang als
-Textzeile. Die Lautstärkeknöpfe lassen sich in den Widget-Einstellungen abschalten.
+Die Ein-/Ausschalt-Schaltfläche wird zusätzlich nur bei der Max angezeigt. Da Gladys
+höchstens vier Schaltflächen pro Kachel darstellt, belegen bei der Max mit aktivierten
+Lautstärketasten die Ein-/Ausschalt-, −-, +-, und Stummschalt-Schaltfläche bereits alle
+vier Plätze; die Eingangstaste wird dann nicht angezeigt. Durch Ausblenden der
+Lautstärketasten in den Widget-Einstellungen wird wieder Platz frei.
 
 Nicht im Widget, nur im Gerät oder in der Konfiguration:
 
-- Power, beim Max.
 - Sound profile, AMBEO mode, Night mode und alle Pegel.

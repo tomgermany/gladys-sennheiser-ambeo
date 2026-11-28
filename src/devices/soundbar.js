@@ -32,6 +32,7 @@
 
 import {
   DEVICE_FEATURE_CATEGORIES as CAT,
+  DEVICE_POLL_FREQUENCIES,
   DEVICE_FEATURE_TYPES as TYPE,
   createLogger,
 } from '@gladysassistant/integration-sdk';
@@ -197,6 +198,7 @@ export function buildDevice(gladys, client, state) {
     external_id: ids.device,
     model: client.info.model,
     should_poll: true,
+    poll_frequency: DEVICE_POLL_FREQUENCIES.EVERY_MINUTES,
     features,
   };
 }

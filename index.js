@@ -23,7 +23,7 @@
 // one. For devices we only ever PUBLISH what we found; the user decides in
 // the Discovery tab which ones to actually create.
 //
-// SDK: @gladysassistant/integration-sdk ^0.15 (Gladys >= 5.1.0).
+// SDK: @gladysassistant/integration-sdk ^0.16 (Gladys >= 5.1.0).
 // -----------------------------------------------------------------------------
 
 import { GladysIntegration, logger } from '@gladysassistant/integration-sdk';
