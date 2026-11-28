@@ -88,9 +88,11 @@ Wertkacheln. Es bietet bis zu vier Schaltflächen:
 | Mute / Unmute | Stummschaltung ein- bzw. ausschalten. |
 | Next: *Name* | Wechselt zum nächsten auswählbaren Eingang. Der Name zeigt das nächste Ziel an. |
 
-Die Ein-/Ausschalt-Schaltfläche wird zusätzlich nur bei der Max angezeigt. Je nach
-Modell und Widget-Einstellungen können daher weniger als vier Schaltflächen erscheinen.
-Die Lautstärkeschaltflächen lassen sich in den Widget-Einstellungen ausblenden.
+Die Ein-/Ausschalt-Schaltfläche wird zusätzlich nur bei der Max angezeigt. Da Gladys
+höchstens vier Schaltflächen pro Kachel darstellt, belegen bei der Max mit aktivierten
+Lautstärketasten die Ein-/Ausschalt-, −-, +-, und Stummschalt-Schaltfläche bereits alle
+vier Plätze; die Eingangstaste wird dann nicht angezeigt. Durch Ausblenden der
+Lautstärketasten in den Widget-Einstellungen wird wieder Platz frei.
 
 Nicht im Widget, nur im Gerät oder in der Konfiguration:
 
