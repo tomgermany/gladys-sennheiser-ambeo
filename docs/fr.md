@@ -27,7 +27,14 @@ apparaît quand même : ce qu'il ne répond pas est journalisé et ignoré.
 
 ## Widget « Télécommande barre de son »
 
-Marche/arrêt, volume −/+ (pas configurable), sourdine et un bouton par entrée sélectionnable.
+Le widget affiche le volume actuel et l'entrée sélectionnée dans deux tuiles de valeur.
+Ses boutons permettent d'allumer/éteindre la Max, de baisser le volume (−), de l'augmenter
+(+), de couper/réactiver le son et de passer à l'entrée sélectionnable suivante. Le bouton
+de changement d'entrée indique la prochaine entrée. Le pas de volume est configurable et
+les boutons de volume peuvent être masqués dans les paramètres du widget.
+
+Les paramètres du widget permettent également de choisir la barre de son commandée par
+cette carte.
 
 ## Scènes
 
