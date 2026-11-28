@@ -165,9 +165,9 @@ export function buildRemoteContent({ client, state, volumeFeatureId, settings = 
     const next = inputs[(index + 1 + inputs.length) % inputs.length];
     components.push({
       type: 'button',
-      // Shows where the button will go; the current input is already in the
-      // status row above, so repeating it here would waste the space.
-      label: { en: `Next: ${next.title}`, fr: `Entrée : ${next.title}` },
+      // The input name alone keeps the button compact; the log-in icon
+      // already communicates that this button changes the selected input.
+      label: { en: next.title, fr: next.title },
       icon: 'log-in',
       style: 'secondary',
       action: { key: ACTION.SOURCE_NEXT, params: { next: String(next.id) } },
