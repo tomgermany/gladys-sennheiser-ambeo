@@ -24,7 +24,7 @@ Auch ein Modell, das nicht auf eine ganze Gruppe von Einstellungen antwortet (wa
 
 Das Widget zeigt die aktuelle Lautstärke und den ausgewählten Eingang in zwei Wertkacheln an. Die Schaltflächen ermöglichen das Ein- und Ausschalten der Max, das Verringern der Lautstärke (−), das Erhöhen der Lautstärke (+), das Stummschalten bzw. Aufheben der Stummschaltung sowie den Wechsel zum nächsten auswählbaren Eingang. Die Eingangstaste zeigt an, welcher Eingang als Nächstes gewählt wird.
 
-Die Lautstärkeschrittweite ist konfigurierbar. In den Widget-Einstellungen kannst du außerdem auswählen, welche Soundbar gesteuert werden soll, und die Lautstärketasten ausblenden.
+Die Lautstärkeschrittweite ist konfigurierbar. In den Widget-Einstellungen kannst du außerdem auswählen, welche Soundbar gesteuert werden soll, und die Lautstärketasten ausblenden. Gladys zeigt höchstens vier Schaltflächen an: Bei der Max belegen Ein-/Ausschalten, Lautstärke −/+, und Stummschaltung bereits alle vier Plätze. Die Taste zum Wechseln des Eingangs wird dann nicht angezeigt, solange die Lautstärketasten aktiviert sind. Durch das Ausblenden der Lautstärketasten wird wieder ein Platz frei.
 
 ## Szenen
 
