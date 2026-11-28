@@ -23,7 +23,7 @@
 // the list the soundbar itself reports — the same list the Input feature in
 // the Devices tab offers. Rename an input in the app, and the button follows.
 //
-// SDK v0.14+/0.15, Gladys 5.1+.
+// SDK v0.16, Gladys 5.3+.
 // -----------------------------------------------------------------------------
 
 import { KEY } from './ambeo/client.js';
