@@ -29,9 +29,9 @@ Das Widget bietet folgende Bedienelemente:
 - Stummschaltung ein-/ausschalten
 - Zum nächsten Eingang wechseln
 
-Zusätzlich zeigt das Widget die Lautstärke als Wertkachel und den aktuell ausgewählten Eingang als Text an. Die Schaltfläche zum Wechseln des Eingangs zeigt an, zu welchem Eingang als Nächstes gewechselt wird.
+Das Widget zeigt die aktuelle Lautstärke und den ausgewählten Eingang in zwei Wertkacheln an. Die Schaltflächen ermöglichen das Ein- und Ausschalten der Max, das Verringern der Lautstärke (−), das Erhöhen der Lautstärke (+), das Stummschalten bzw. Aufheben der Stummschaltung sowie den Wechsel zum nächsten auswählbaren Eingang. Die Eingangstaste zeigt an, welcher Eingang als Nächstes gewählt wird.
 
-In den Widget-Einstellungen kannst du auswählen, welche Soundbar gesteuert werden soll. Außerdem lassen sich die Lautstärketasten ausblenden.
+Die Lautstärkeschrittweite ist konfigurierbar. In den Widget-Einstellungen kannst du außerdem auswählen, welche Soundbar gesteuert werden soll, und die Lautstärketasten ausblenden.
 
 ## Szenen
 
