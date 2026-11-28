@@ -34,7 +34,10 @@ de changement d'entrée indique la prochaine entrée. Le pas de volume est confi
 les boutons de volume peuvent être masqués dans les paramètres du widget.
 
 Les paramètres du widget permettent également de choisir la barre de son commandée par
-cette carte.
+cette carte. Gladys affiche au maximum quatre boutons : sur la Max, les boutons marche/arrêt,
+volume −/+, et sourdine occupent les quatre emplacements. Le bouton de changement d'entrée
+n'apparaît donc pas lorsque les boutons de volume sont activés. Masquer les boutons de volume
+libère un emplacement.
 
 ## Scènes
 
