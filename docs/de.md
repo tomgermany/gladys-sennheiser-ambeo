@@ -22,13 +22,6 @@ Auch ein Modell, das nicht auf eine ganze Gruppe von Einstellungen antwortet (wa
 
 ## Widget „Soundbar-Fernbedienung“
 
-Das Widget bietet folgende Bedienelemente:
-
-- Ein-/Ausschalten (nur bei der Max)
-- Lautstärke verringern und erhöhen (Schrittweite konfigurierbar)
-- Stummschaltung ein-/ausschalten
-- Zum nächsten Eingang wechseln
-
 Das Widget zeigt die aktuelle Lautstärke und den ausgewählten Eingang in zwei Wertkacheln an. Die Schaltflächen ermöglichen das Ein- und Ausschalten der Max, das Verringern der Lautstärke (−), das Erhöhen der Lautstärke (+), das Stummschalten bzw. Aufheben der Stummschaltung sowie den Wechsel zum nächsten auswählbaren Eingang. Die Eingangstaste zeigt an, welcher Eingang als Nächstes gewählt wird.
 
 Die Lautstärkeschrittweite ist konfigurierbar. In den Widget-Einstellungen kannst du außerdem auswählen, welche Soundbar gesteuert werden soll, und die Lautstärketasten ausblenden.
