@@ -167,7 +167,7 @@ export function buildRemoteContent({ client, state, volumeFeatureId, settings = 
       type: 'button',
       // Shows where the button will go; the current input is already in the
       // status row above, so repeating it here would waste the space.
-      label: { en: `Input: ${next.title}`, fr: `Entrée : ${next.title}` },
+      label: { en: `Next: ${next.title}`, fr: `Entrée : ${next.title}` },
       icon: 'log-in',
       style: 'secondary',
       action: { key: ACTION.SOURCE_NEXT, params: { next: String(next.id) } },
