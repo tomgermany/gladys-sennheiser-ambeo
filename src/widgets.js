@@ -127,14 +127,14 @@ export function buildRemoteContent({ client, state, volumeFeatureId, settings = 
     components.push(
       {
         type: 'button',
-        label: { en: 'Quieter', fr: 'Moins fort' },
+        label: { en: '−', fr: '−' },
         icon: 'volume-1',
         style: 'secondary',
         action: { key: ACTION.VOLUME_DOWN },
       },
       {
         type: 'button',
-        label: { en: 'Louder', fr: 'Plus fort' },
+        label: { en: '+', fr: '+' },
         icon: 'volume-2',
         style: 'secondary',
         action: { key: ACTION.VOLUME_UP },
